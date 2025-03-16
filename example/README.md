@@ -1,6 +1,6 @@
-# reactify_example
+# kaeru_example
 
-Demonstrates how to use the reactify plugin.
+Demonstrates how to use the kaeru plugin.
 
 ## Getting Started
 

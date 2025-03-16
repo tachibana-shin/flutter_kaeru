@@ -18,15 +18,15 @@ Add this package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  reactify:
+  kaeru:
     git:
-      url: https://github.com/tachibana-shin/flutter-reactify.git
+      url: https://github.com/tachibana-shin/flutter-kaeru.git
 ```
 
 Import it in your project:
 
 ```dart
-import 'package:reactify/reactify.dart';
+import 'package:kaeru/kaeru.dart';
 ```
 
 ---

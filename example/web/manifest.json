@@ -1,6 +1,6 @@
 {
-    "name": "reactify_example",
-    "short_name": "reactify_example",
+    "name": "kaeru_example",
+    "short_name": "kaeru_example",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
