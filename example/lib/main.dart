@@ -48,7 +48,7 @@ class Counter extends StatefulWidget {
   State<Counter> createState() => _CounterState();
 }
 
-class _CounterState extends State<Counter> with KaeruMixin {
+class _CounterState extends State<Counter> with KaeruMixin, KaeruLifeMixin {
   late final foo = ref<int>(0);
   late final fooDouble = computed(() => foo.value * 2);
   late final fooDoublePlus = Computed<int>(() => foo.value + 1);
@@ -71,6 +71,12 @@ class _CounterState extends State<Counter> with KaeruMixin {
     watch([computedOnlyListen], () {
       print('computed only listen changed');
     });
+
+    onMounted(() => print('✅ Widget Mounted!'));
+    onDependenciesChanged(() => print('🔄 Dependencies Changed!'));
+    onUpdated(() => print('♻️ Widget Updated!'));
+    onDeactivated(() => print('⚠️ Widget Deactivated!'));
+    onBeforeUnmount(() => print('🗑 Widget Disposed!'));
 
     super.initState();
   }
