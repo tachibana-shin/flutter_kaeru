@@ -1,22 +1,29 @@
+
 import 'package:flutter/foundation.dart';
 import 'package:notifier_plus/notifier_plus.dart';
 import 'package:reactivity/event_bus.dart';
 
 import '../shared/reactive_notifier.dart';
 
+/// A reactive container that holds a single value of type `T`, providing
+/// notifications whenever the value changes.
+///
+/// By implementing [ValueListenable], other parts of the application can
+/// be notified when [value] is updated. The class also extends
+/// [ReactiveNotifier], integrating with the reactive ecosystem.
 class Ref<T> extends ReactiveNotifier implements ValueListenable<T> {
   late final VoidCallback _onChange;
 
-  /// Creates a [ChangeNotifier] that wraps this value.
+  /// Initializes a new [Ref] with the given initial [value]. The [onChange]
+  /// callback is defined to schedule a single notification for changes in
+  /// [value].
   Ref(this._value) {
     _onChange = oneCallTask(() => notifyListeners());
   }
 
-  /// The current value stored in this notifier.
-  ///
-  /// When the value is replaced with something that is not equal to the old
-  /// value as evaluated by the equality operator ==, this class notifies its
-  /// listeners.
+  /// The current value of this [Ref]. Accessing this getter also establishes
+  /// a dependency for any current watcher, meaning that if [value] changes,
+  /// the watcher can respond accordingly.
   @override
   T get value {
     getCurrentWatcher()?.addDepend(this);
@@ -24,6 +31,9 @@ class Ref<T> extends ReactiveNotifier implements ValueListenable<T> {
   }
 
   T _value;
+
+  /// Updates the current value and triggers a change notification, unless
+  /// the new value is identical to the existing one.
   set value(T newValue) {
     if (_value == newValue) {
       return;
@@ -32,6 +42,8 @@ class Ref<T> extends ReactiveNotifier implements ValueListenable<T> {
     _onChange();
   }
 
+  /// Returns a string representation containing the runtime type and the
+  /// current [value]. Useful for debugging.
   @override
   String toString() => '${describeIdentity(this)}($value)';
 }
