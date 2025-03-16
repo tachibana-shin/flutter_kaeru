@@ -20,7 +20,7 @@ Add this package to your `pubspec.yaml`:
 dependencies:
   reactivity:
     git:
-      url: https://github.com/your-repo/reactivity.git
+      url: https://github.com/tachibana-shin/flutter-reactivity.git
 ```
 
 Import it in your project:
