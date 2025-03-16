@@ -11,7 +11,7 @@ import '../foundation/ref.dart';
 /// create a reactive reference that notifies listeners of changes, and
 /// use [computed] to define a lazy-evaluated value that automatically
 /// updates whenever its dependencies change.
-mixin ReactivityMixin<T extends StatefulWidget> on State<T> {
+mixin ReactifyMixin<T extends StatefulWidget> on State<T> {
   /// Creates a reactive [Ref] with the given initial [value]. This can be
   /// used to store and notify changes to a mutable value over the lifetime
   /// of the widget.

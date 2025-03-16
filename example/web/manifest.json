@@ -1,6 +1,6 @@
 {
-    "name": "reactivity_example",
-    "short_name": "reactivity_example",
+    "name": "reactify_example",
+    "short_name": "reactify_example",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

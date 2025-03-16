@@ -1,7 +1,7 @@
-name: reactivity
+name: reactify
 description: "A powerful a comprehensive and efficient reactivity system for Flutter, inspired by Vue 3's @vue/reactivity."
 version: 0.0.1
-homepage: "https://github.com/tachibana-shin/flutter-reactivity"
+homepage: "https://github.com/tachibana-shin/flutter-reactify"
 
 environment:
   sdk: ^3.6.2

@@ -1,8 +1,8 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:notifier_plus/notifier_plus.dart';
-import 'package:reactivity/event_bus.dart';
-import 'package:reactivity/shared/watcher.dart';
+import 'package:reactify/event_bus.dart';
+import 'package:reactify/shared/watcher.dart';
 
 import '../shared/reactive_notifier.dart';
 

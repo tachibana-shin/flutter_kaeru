@@ -7,6 +7,6 @@ export 'foundation/async_computed.dart';
 export 'foundation/computed.dart';
 export 'foundation/ref.dart';
 
-export 'mixins/reactivity_mixin.dart';
+export 'mixins/reactify_mixin.dart';
 
 export 'widget/watch.dart';

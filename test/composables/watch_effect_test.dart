@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reactivity/composables/watch_effect.dart';
-import 'package:reactivity/foundation/ref.dart';
+import 'package:reactify/composables/watch_effect.dart';
+import 'package:reactify/foundation/ref.dart';
 
 void main() {
   group('watchEffect', () {

@@ -1,6 +1,6 @@
-# Reactivity for Flutter
+# Reactify for Flutter
 
-**Reactivity** is a comprehensive and efficient reactivity system for Flutter, inspired by Vue 3's `@vue/reactivity`. It provides a fully functional reactive programming model that makes state management in Flutter simple, optimized, and declarative.
+**Reactify** is a comprehensive and efficient reactivity system for Flutter, inspired by Vue 3's `@vue/reactivity`. It provides a fully functional reactive programming model that makes state management in Flutter simple, optimized, and declarative.
 
 ## 🚀 Features
 
@@ -18,15 +18,15 @@ Add this package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  reactivity:
+  reactify:
     git:
-      url: https://github.com/tachibana-shin/flutter-reactivity.git
+      url: https://github.com/tachibana-shin/flutter-reactify.git
 ```
 
 Import it in your project:
 
 ```dart
-import 'package:reactivity/reactivity.dart';
+import 'package:reactify/reactify.dart';
 ```
 
 ---

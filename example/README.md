@@ -1,6 +1,6 @@
-# reactivity_example
+# reactify_example
 
-Demonstrates how to use the reactivity plugin.
+Demonstrates how to use the reactify plugin.
 
 ## Getting Started
 

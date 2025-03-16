@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reactivity/foundation/async_computed.dart';
+import 'package:reactify/foundation/async_computed.dart';
 
 void main() {
   group('AsyncComputed', () {
