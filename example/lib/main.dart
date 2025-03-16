@@ -29,16 +29,15 @@ class App2 extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return Watch(
-        builder: (context) => Row(children: [
-              ElevatedButton(
-                onPressed: () {
-                  showCounter.value = !showCounter.value;
-                },
-                child: Text(showCounter.value ? 'hide' : 'show'),
-              ),
-              if (showCounter.value) Counter()
-            ]));
+    return Watch((context) => Row(children: [
+          ElevatedButton(
+            onPressed: () {
+              showCounter.value = !showCounter.value;
+            },
+            child: Text(showCounter.value ? 'hide' : 'show'),
+          ),
+          if (showCounter.value) Counter()
+        ]));
   }
 }
 
@@ -57,6 +56,7 @@ class _CounterState extends State<Counter> with KaeruMixin {
     print('Computed call');
     return fooDouble.value > 10;
   });
+  late final computedOnlyListen = computed(() => foo.value);
   final bar = Ref<int>(0);
 
   @override
@@ -66,6 +66,10 @@ class _CounterState extends State<Counter> with KaeruMixin {
 
       if (fooDoublePlus.value % 2 == 0) return;
       print('foo + bar = ${foo.value + bar.value}');
+    });
+
+    watch([computedOnlyListen], () {
+      print('computed only listen changed');
     });
 
     super.initState();
@@ -91,10 +95,10 @@ class _CounterState extends State<Counter> with KaeruMixin {
           child: const Text("Increase bar"),
         ),
         const SizedBox(height: 16),
-        Watch(builder: (context) {
+        Watch((context) {
           print('Watch render');
           if (fooGtTeen.value) {
-            return Watch(builder: (c) {
+            return Watch((c) {
               print('Watch child 1 render');
 
               return Text("Bar: ${bar.value}");

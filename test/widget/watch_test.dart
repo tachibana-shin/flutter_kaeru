@@ -23,7 +23,8 @@ void main() {
     //   expect(find.text('Value: 1'), findsOneWidget);
     // });
 
-    testWidgets('should not rebuild if the value does not change', (tester) async {
+    testWidgets('should not rebuild if the value does not change',
+        (tester) async {
       final ref = Ref<int>(5);
       int buildCount = 0;
 
@@ -31,7 +32,7 @@ void main() {
         Directionality(
           textDirection: TextDirection.ltr,
           child: Watch(
-            builder: (context) {
+            (context) {
               buildCount++;
               return Text('Value: ${ref.value}');
             },

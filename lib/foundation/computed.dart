@@ -85,6 +85,13 @@ class Computed<T> extends ReactiveNotifier with Watcher {
     return _value;
   }
 
+  @override
+  void addListener(VoidCallback listener) {
+    _runDry();
+
+    super.addListener(listener);
+  }
+
   /// Returns a string representation of this `Computed` object,
   /// including its current computed value.
   @override
