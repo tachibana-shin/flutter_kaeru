@@ -1,7 +1,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:notifier_plus/notifier_plus.dart';
-import 'package:reactify/event_bus.dart';
+import 'package:kaeru/event_bus.dart';
 
 import '../shared/reactive_notifier.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reactify/reactify.dart';
+import 'package:kaeru/kaeru.dart';
 
 void main() {
   runApp(MyApp());
@@ -17,7 +17,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(context) {
     return MaterialApp(
         home: Scaffold(
-            appBar: AppBar(title: const Text("Reactify Example")),
+            appBar: AppBar(title: const Text("Kaeru Example")),
             body: Padding(padding: const EdgeInsets.all(16.0), child: App2())));
   }
 }
@@ -49,7 +49,7 @@ class Counter extends StatefulWidget {
   State<Counter> createState() => _CounterState();
 }
 
-class _CounterState extends State<Counter> with ReactifyMixin {
+class _CounterState extends State<Counter> with KaeruMixin {
   late final foo = ref<int>(0);
   late final fooDouble = computed(() => foo.value * 2);
   late final fooDoublePlus = Computed<int>(() => foo.value + 1);

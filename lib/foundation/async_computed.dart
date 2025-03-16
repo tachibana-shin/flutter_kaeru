@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:reactify/event_bus.dart';
+import 'package:kaeru/event_bus.dart';
 
 import '../composables/watch_effect.dart';
 import '../shared/reactive_notifier.dart';

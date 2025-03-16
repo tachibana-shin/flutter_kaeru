@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:reactify/reactify.dart';
+import 'package:kaeru/kaeru.dart';
 
 void main() {
   group('Watch Widget', () {
