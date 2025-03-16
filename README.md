@@ -1,18 +1,254 @@
-# reactivity
+# Reactivity for Flutter
 
-A new Flutter plugin project.
+**Reactivity** is a comprehensive and efficient reactivity system for Flutter, inspired by Vue 3's `@vue/reactivity`. It provides a fully functional reactive programming model that makes state management in Flutter simple, optimized, and declarative.
 
-## Getting Started
+## 🚀 Features
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/to/develop-plugins),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+- **Fully reactive state management** with `Ref`, `Computed`, `AsyncComputed`, and `watchEffect`.
+- **Automatic dependency tracking** for efficient updates.
+- **Supports both synchronous and asynchronous computed values**.
+- **Optimized UI updates** with `Watch` and `ReactivityMixin`.
+- **Seamless integration with ChangeNotifier and ValueNotifier.**
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
 
-The plugin project was generated without specifying the `--platforms` flag, no platforms are currently supported.
-To add platforms, run `flutter create -t plugin --platforms <platforms> .` in this directory.
-You can also find a detailed instruction on how to add platforms in the `pubspec.yaml` at https://flutter.dev/to/pubspec-plugin-platforms.
+## 📦 Installation
+
+Add this package to your `pubspec.yaml`:
+
+```yaml
+dependencies:
+  reactivity:
+    git:
+      url: https://github.com/your-repo/reactivity.git
+```
+
+Import it in your project:
+
+```dart
+import 'package:reactivity/reactivity.dart';
+```
+
+---
+
+## 🏗 API Documentation
+
+### 1️⃣ **Reactive State: `Ref<T>`**
+
+Represents a reactive variable that automatically triggers updates when changed.
+
+#### Parameters:
+
+| Parameter | Type | Description                                  |
+| --------- | ---- | -------------------------------------------- |
+| `value`   | `T`  | The initial value of the reactive reference. |
+
+#### Methods:
+
+| Method                           | Returns       | Description                                          |
+| -------------------------------- | ------------- | ---------------------------------------------------- |
+| `select<U>(U Function(T value))` | `Computed<U>` | Creates a computed value derived from this `Ref<T>`. |
+
+#### Example:
+
+```dart
+final count = Ref(0);
+count.addListener(() {
+  print("Count changed: ${count.value}");
+});
+
+count.value++;  // ✅ Triggers update
+
+final doubleCount = count.select((v) => v * 2);
+print(doubleCount.value); // ✅ 0
+count.value = 5;
+print(doubleCount.value); // ✅ 10
+```
+
+### 2️⃣ **Derived State: `Computed<T>`**
+
+Creates a computed value that automatically updates when dependencies change.
+
+#### Parameters:
+
+| Parameter | Type           | Description                                 |
+| --------- | -------------- | ------------------------------------------- |
+| `getter`  | `T Function()` | A function that returns the computed value. |
+
+#### Methods:
+
+| Method                           | Returns       | Description                       |
+| -------------------------------- | ------------- | --------------------------------- |
+| `select<U>(U Function(T value))` | `Computed<U>` | Creates a derived computed value. |
+
+#### Example:
+
+```dart
+final count = Ref(2);
+final doubleCount = Computed(() => count.value * 2);
+
+print(doubleCount.value); // ✅ 4
+count.value++;
+print(doubleCount.value); // ✅ 6
+
+final tripleCount = doubleCount.select((v) => v * 1.5);
+print(tripleCount.value); // ✅ 9
+```
+
+### 3️⃣ **Effects: `watchEffect` & `watch`**
+
+#### `watchEffect(Function callback) -> VoidCallback`
+
+- Automatically tracks dependencies and re-executes when values change.
+
+#### Example:
+
+```dart
+final stop = watchEffect(() {
+  print("Count is now: ${count.value}");
+});
+
+count.value++;  // ✅ Automatically tracks dependencies
+stop(); // ✅ Stops watching
+```
+
+#### `watch(List<ChangeNotifier> sources, Function callback, {bool immediate = false}) -> VoidCallback`
+
+- Watches multiple `ChangeNotifier` sources.
+- If `immediate = true`, executes the callback immediately.
+
+#### Example:
+
+```dart
+final stop = watch([count], () {
+  print("Count changed: ${count.value}");
+}, immediate: true);
+
+stop(); // ✅ Stops watching
+```
+
+### 4️⃣ **Asynchronous Derived State: `AsyncComputed<T>`**
+
+Handles computed values that depend on asynchronous operations.
+
+#### Parameters:
+
+| Parameter      | Type                       | Description                                             |
+| -------------- | -------------------------- | ------------------------------------------------------- |
+| `getter`       | `Future<T> Function()`     | A function returning a future value.                    |
+| `defaultValue` | `T?`                       | An optional initial value before computation completes. |
+| `onError`      | `Function(dynamic error)?` | An optional error handler.                              |
+| `immediate`    | `bool`                     | Whether to compute immediately.                         |
+
+#### Example:
+
+```dart
+final asyncData = AsyncComputed(() async {
+  await Future.delayed(Duration(seconds: 1));
+  return "Loaded";
+}, defaultValue: "Loading", onError: (e) => print("Error: $e"), immediate: true);
+
+print(asyncData.value);  // ✅ "Loading"
+await Future.delayed(Duration(seconds: 1));
+print(asyncData.value);  // ✅ "Loaded"
+```
+
+### 5️⃣ **UI Integration: `ReactivityMixin` and `Watch`**
+
+#### `ReactivityMixin` (StatefulWidget Integration)
+
+Allows stateful widgets to easily integrate with reactive values.
+
+#### Example:
+
+```dart
+class MyWidget extends StatefulWidget {
+  @override
+  _MyWidgetState createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> with ReactivityMixin {
+  late final Ref<int> count;
+
+  @override
+  void initState() {
+    super.initState();
+    count = ref(0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Watch(() => Text("Count: ${count.value}")),
+        ElevatedButton(
+          onPressed: () => count.value++,
+          child: Text("Increment"),
+        ),
+      ],
+    );
+  }
+}
+```
+
+#### `Watch` (Automatic UI Rebuilds)
+
+A widget that automatically updates when its dependencies change.
+
+#### Example:
+
+```dart
+Watch(
+  () => Text("Value: ${count.value}"),
+)
+```
+
+### 6️⃣ **Integration with ValueNotifier & ChangeNotifier**
+
+#### `ValueNotifier.toRef()`
+
+Converts a `ValueNotifier<T>` into a `Ref<T>`.
+
+#### Example:
+
+```dart
+final valueNotifier = ValueNotifier(0);
+final ref = valueNotifier.toRef();
+
+ref.addListener(() {
+  print("Updated: ${ref.value}");
+});
+
+valueNotifier.value = 10;  // ✅ Ref updates automatically
+```
+
+#### `VueNotifier` Extension
+
+Adds `.toRef()` to `VueNotifier` to integrate seamlessly.
+
+---
+
+## 🎯 API Summary
+
+| Feature                 | Supported |
+| ----------------------- | --------- |
+| `Ref<T>`                | ✅        |
+| `Computed<T>`           | ✅        |
+| `AsyncComputed<T>`      | ✅        |
+| `watchEffect`           | ✅        |
+| `watch`                 | ✅        |
+| `ReactivityMixin`       | ✅        |
+| `Watch` Widget          | ✅        |
+| `ValueNotifier.toRef()` | ✅        |
+| `ReactiveNotifier<T>`   | ✅        |
+| `VueNotifier.toRef()`   | ✅        |
+
+This package provides an intuitive and efficient reactivity system for Flutter, making state management much easier and more performant. 🚀
+
+## 🛠 Contributing
+
+Pull requests and feature requests are welcome! Feel free to open an issue or contribute.
+
+## 📜 License
+
+MIT License. See [LICENSE](LICENSE) for details.
