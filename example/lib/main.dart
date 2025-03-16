@@ -25,6 +25,8 @@ class _MyAppState extends State<MyApp> {
 class App2 extends StatelessWidget {
   final showCounter = Ref(true);
 
+  App2({super.key});
+
   @override
   Widget build(context) {
     return Watch(
