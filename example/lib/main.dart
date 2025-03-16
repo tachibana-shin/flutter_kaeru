@@ -1,63 +1,107 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:reactivity/reactivity.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _reactivityPlugin = Reactivity();
+  @override
+  Widget build(context) {
+    return MaterialApp(
+        home: Scaffold(
+            appBar: AppBar(title: const Text("Reactivity Example")),
+            body: Padding(padding: const EdgeInsets.all(16.0), child: App2())));
+  }
+}
+
+class App2 extends StatelessWidget {
+  final showCounter = Ref(true);
+
+  @override
+  Widget build(context) {
+    return Watch(
+        builder: (context) => Row(children: [
+              ElevatedButton(
+                onPressed: () {
+                  showCounter.value = !showCounter.value;
+                },
+                child: Text(showCounter.value ? 'hide' : 'show'),
+              ),
+              if (showCounter.value) Counter()
+            ]));
+  }
+}
+
+class Counter extends StatefulWidget {
+  const Counter({super.key});
+
+  @override
+  State<Counter> createState() => _CounterState();
+}
+
+class _CounterState extends State<Counter> with ReactivityMixin {
+  late final foo = ref<int>(0);
+  late final fooDouble = computed(() => foo.value * 2);
+  late final fooDoublePlus = Computed<int>(() => foo.value + 1);
+  late final fooGtTeen = computed<bool>(() {
+    print('Computed call');
+    return fooDouble.value > 10;
+  });
+  final bar = Ref<int>(0);
 
   @override
   void initState() {
-    super.initState();
-    initPlatformState();
-  }
+    watchEffect(() {
+      print('watchEffect run');
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await _reactivityPlugin.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
+      if (fooDoublePlus.value % 2 == 0) return;
+      print('foo + bar = ${foo.value + bar.value}');
     });
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
+    print('Root render');
+
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            foo.value++;
+          },
+          child: const Text("Increase foo"),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        const SizedBox(height: 8),
+        ElevatedButton(
+          onPressed: () {
+            bar.value++;
+          },
+          child: const Text("Increase bar"),
         ),
-      ),
+        const SizedBox(height: 16),
+        Watch(builder: (context) {
+          print('Watch render');
+          if (fooGtTeen.value) {
+            return Watch(builder: (c) {
+              print('Watch child 1 render');
+
+              return Text("Bar: ${bar.value}");
+            });
+          } else {
+            return Text("Bar: ${bar.value}");
+          }
+        }),
+      ],
     );
   }
 }
