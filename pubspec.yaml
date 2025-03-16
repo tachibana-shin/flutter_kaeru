@@ -1,5 +1,5 @@
 name: reactivity
-description: "A powerful reactivity system for Flutter, inspired by Vue 3's @vue/reactivity."
+description: "A powerful a comprehensive and efficient reactivity system for Flutter, inspired by Vue 3's @vue/reactivity."
 version: 0.0.1
 homepage: "https://github.com/tachibana-shin/flutter-reactivity"
 
@@ -8,7 +8,6 @@ environment:
   flutter: '>=3.3.0'
 
 dependencies:
-  collection: ^1.19.0
   flutter:
     sdk: flutter
   notifier_plus: ^0.1.1
