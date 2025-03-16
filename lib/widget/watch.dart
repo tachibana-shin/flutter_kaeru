@@ -16,10 +16,7 @@ class Watch extends StatefulWidget {
 
   /// Creates a new [Watch] widget that rebuilds whenever the [builder]'s
   /// dependencies are updated.
-  const Watch({
-    super.key,
-    required this.builder,
-  });
+  const Watch(this.builder, {super.key});
 
   @override
   State<Watch> createState() => _WatchState();
@@ -34,8 +31,7 @@ class _WatchState extends State<Watch> {
   /// a rebuild when dependencies change.
   @override
   void initState() {
-    _computed = Computed(() => widget.builder(context))
-      ..addListener(_refresh);
+    _computed = Computed(() => widget.builder(context))..addListener(_refresh);
     super.initState();
   }
 
