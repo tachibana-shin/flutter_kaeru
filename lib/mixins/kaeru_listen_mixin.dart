@@ -40,4 +40,13 @@ mixin KaeruListenMixin<T extends StatefulWidget> on State<T> {
       }
     };
   }
+
+  @override
+  void dispose() {
+    for (var notifier in _listenStore.keys) {
+      notifier.removeListener(_listenStore[notifier]!);
+    }
+    _listenStore.clear();
+    super.dispose();
+  }
 }
