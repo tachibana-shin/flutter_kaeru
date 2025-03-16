@@ -113,7 +113,43 @@ class _CounterState extends State<Counter> with KaeruMixin, KaeruLifeMixin {
             return Text("Bar: ${bar.value}");
           }
         }),
+        Watch((c) {
+          print('Widget parent ShowFoo render');
+          return bar.value % 2 == 0 ? SizedBox.shrink() : ShowFoo(foo: foo);
+        })
       ],
     );
+  }
+}
+
+class ShowFoo extends StatefulWidget {
+  final Ref<int> foo;
+
+  ShowFoo({required this.foo});
+
+  @override
+  createState() => _ShowFooState();
+}
+
+class _ShowFooState extends State<ShowFoo> with KaeruListenMixin, KaeruMixin {
+  late final _fooDouble = computed(() {
+    print('ShowFoo computed emit change');
+    return widget.foo.value * 2;
+  });
+  @override
+  void initState() {
+    listen(widget.foo, () {
+      print('ShowFoo emit change foo ${widget.foo.value}');
+    });
+
+    super.initState();
+  }
+
+  @override
+  Widget build(context) {
+    return Column(children: [
+      Watch((context) => Text('ShowFoo: ${widget.foo.value}')),
+      Watch((c) => Text('foo * 2 = ${_fooDouble.value}'))
+    ]);
   }
 }

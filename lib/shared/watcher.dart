@@ -37,5 +37,6 @@ mixin  class  Watcher<T> {
 
   void dispose() {
     _listenable?.removeListener(onChange);
+    _listenable = null;
   }
 }

@@ -50,6 +50,7 @@ class _WatchState extends State<Watch> {
   @override
   void dispose() {
     _computed.removeListener(_refresh);
+    _computed.dispose();
     super.dispose();
   }
 }
