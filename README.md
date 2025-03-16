@@ -1,13 +1,13 @@
-# Reactify for Flutter
+# Kaeru for Flutter
 
-**Reactify** is a comprehensive and efficient reactivity system for Flutter, inspired by Vue 3's `@vue/reactivity`. It provides a fully functional reactive programming model that makes state management in Flutter simple, optimized, and declarative.
+**Kaeru** is a comprehensive and efficient reactivity system for Flutter, inspired by Vue 3's `@vue/reactivity`. It provides a fully functional reactive programming model that makes state management in Flutter simple, optimized, and declarative.
 
 ## 🚀 Features
 
 - **Fully reactive state management** with `Ref`, `Computed`, `AsyncComputed`, and `watchEffect`.
 - **Automatic dependency tracking** for efficient updates.
 - **Supports both synchronous and asynchronous computed values**.
-- **Optimized UI updates** with `Watch` and `ReactivityMixin`.
+- **Optimized UI updates** with `Watch` and `KaeruMixin`.
 - **Seamless integration with ChangeNotifier and ValueNotifier.**
 
 ---
@@ -153,9 +153,9 @@ await Future.delayed(Duration(seconds: 1));
 print(asyncData.value);  // ✅ "Loaded"
 ```
 
-### 5️⃣ **UI Integration: `ReactivityMixin` and `Watch`**
+### 5️⃣ **UI Integration: `KaeruMixin` and `Watch`**
 
-#### `ReactivityMixin` (StatefulWidget Integration)
+#### `KaeruMixin` (StatefulWidget Integration)
 
 Allows stateful widgets to easily integrate with reactive values.
 
@@ -167,7 +167,7 @@ class MyWidget extends StatefulWidget {
   _MyWidgetState createState() => _MyWidgetState();
 }
 
-class _MyWidgetState extends State<MyWidget> with ReactivityMixin {
+class _MyWidgetState extends State<MyWidget> with KaeruMixin {
   late final Ref<int> count;
 
   @override
@@ -222,9 +222,9 @@ ref.addListener(() {
 valueNotifier.value = 10;  // ✅ Ref updates automatically
 ```
 
-#### `VueNotifier` Extension
+#### `ValueNotifier` Extension
 
-Adds `.toRef()` to `VueNotifier` to integrate seamlessly.
+Adds `.toRef()` to `ValueNotifier` to integrate seamlessly.
 
 ---
 
@@ -237,7 +237,7 @@ Adds `.toRef()` to `VueNotifier` to integrate seamlessly.
 | `AsyncComputed<T>`      | ✅        |
 | `watchEffect`           | ✅        |
 | `watch`                 | ✅        |
-| `ReactivityMixin`       | ✅        |
+| `KaeruMixin`            | ✅        |
 | `Watch` Widget          | ✅        |
 | `ValueNotifier.toRef()` | ✅        |
 | `ReactiveNotifier<T>`   | ✅        |
