@@ -7,6 +7,8 @@ export 'foundation/async_computed.dart';
 export 'foundation/computed.dart';
 export 'foundation/ref.dart';
 
+export 'mixins/kaeru_life_mixin.dart';
+export 'mixins/kaeru_listen_mixin.dart';
 export 'mixins/kaeru_mixin.dart';
 
 export 'widget/watch.dart';

@@ -228,6 +228,164 @@ Adds `.toRef()` to `ValueNotifier` to integrate seamlessly.
 
 ---
 
+### 📌 Kaeru Lifecycle & Listening Mixins
+
+**KaeruLifeMixin** and **KaeruListenMixin** are powerful mixins designed to simplify Flutter development by providing Vue-like lifecycle hooks and reactive state listening.
+
+### 🎯 Why Use These Mixins?
+
+✅ Cleaner code: No need to override multiple lifecycle methods or manage listeners manually.
+✅ Reusable: Apply them to any StatefulWidget to enhance reactivity.
+✅ Inspired by Vue: Provides a familiar development experience for reactive state management.
+
+### 🟢 KaeruLifeMixin
+
+**KaeruLifeMixin** provides Vue-like lifecycle hooks for `StatefulWidget`. It enables multiple callbacks for different lifecycle events.
+
+#### 🚀 Features
+
+- `onMounted()`: Called when the widget is first created (`initState`).
+- `onDependenciesChanged()`: Called when dependencies change (`didChangeDependencies`).
+- `onUpdated()`: Called when the widget receives updated properties (`didUpdateWidget`).
+- `onDeactivated()`: Called when the widget is temporarily removed (`deactivate`).
+- `onBeforeUnmount()`: Called just before the widget is disposed (`dispose`).
+
+#### 📝 Example Usage
+
+```dart
+class MyComponent extends StatefulWidget {
+  @override
+  _MyComponentState createState() => _MyComponentState();
+}
+
+class _MyComponentState extends State<MyComponent> with KaeruLifeMixin<MyComponent> {
+  @override
+  void initState() {
+    super.initState();
+
+    onMounted(() => print('✅ Widget Mounted!'));
+    onDependenciesChanged(() => print('🔄 Dependencies Changed!'));
+    onUpdated(() => print('♻️ Widget Updated!'));
+    onDeactivated(() => print('⚠️ Widget Deactivated!'));
+    onBeforeUnmount(() => print('🗑 Widget Disposed!'));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('KaeruLifeMixin Example');
+  }
+}
+```
+
+### 🟢 KaeruListenMixin
+
+**KaeruListenMixin** simplifies listening to `ChangeNotifier` updates within a `StatefulWidget`. It allows adding listeners dynamically and managing their cleanup automatically.
+
+#### 🚀 Features
+
+- `listen()`: Subscribes to a single `ChangeNotifier` and executes a callback when it changes.
+- `listenAll()`: Subscribes to multiple `ChangeNotifiers` with a single callback.
+- Returns a cancel function to remove listeners when necessary.
+
+#### 📝 Example Usage
+
+##### Listening to a Single Notifier
+
+```dart
+class MyNotifier extends ChangeNotifier {
+  void update() {
+    notifyListeners();
+  }
+}
+
+class MyComponent extends StatefulWidget {
+  @override
+  _MyComponentState createState() => _MyComponentState();
+}
+
+class _MyComponentState extends State<MyComponent> with KaeruListenMixin<MyComponent> {
+  final myNotifier = MyNotifier();
+  VoidCallback? cancelListener;
+
+  @override
+  void initState() {
+    super.initState();
+
+    cancelListener = listen(myNotifier, () {
+      print('Single notifier changed!');
+    });
+  }
+
+  @override
+  void dispose() {
+    cancelListener?.call();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('Listening to a single ChangeNotifier');
+  }
+}
+```
+
+##### Listening to Multiple Notifiers
+
+```dart
+class NotifierA extends ChangeNotifier {
+  void update() => notifyListeners();
+}
+
+class NotifierB extends ChangeNotifier {
+  void update() => notifyListeners();
+}
+
+class MyComponent extends StatefulWidget {
+  @override
+  _MyComponentState createState() => _MyComponentState();
+}
+
+class _MyComponentState extends State<MyComponent> with KaeruListenMixin<MyComponent> {
+  final notifierA = NotifierA();
+  final notifierB = NotifierB();
+  VoidCallback? cancelListeners;
+
+  @override
+  void initState() {
+    super.initState();
+
+    cancelListeners = listenAll([notifierA, notifierB], () {
+      print('One of the notifiers changed!');
+    });
+  }
+
+  @override
+  void dispose() {
+    cancelListeners?.call();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('Listening to multiple ChangeNotifiers');
+  }
+}
+```
+
+### ✨ Summary
+
+| Feature            | KaeruLifeMixin                                                | KaeruListenMixin                                 |
+| ------------------ | ------------------------------------------------------------- | ------------------------------------------------ |
+| Lifecycle Hooks    | ✅ Provides `onMounted`, `onUpdated`, `onBeforeUnmount`, etc. | ❌ Not applicable                                |
+| Reactive Listeners | ❌ Not applicable                                             | ✅ Handles `ChangeNotifier` updates              |
+| Automatic Cleanup  | ✅ Hooks are executed at proper lifecycle stages              | ✅ Listeners are removed automatically           |
+| Code Simplicity    | ✅ Reduces the need for overriding multiple lifecycle methods | ✅ Manages `ChangeNotifier` subscriptions easily |
+
+🚀 **KaeruLifeMixin** is perfect for handling widget lifecycle events.
+🔄 **KaeruListenMixin** makes managing `ChangeNotifier` listeners easy.
+
+---
+
 ## 🎯 API Summary
 
 | Feature                 | Supported |
