@@ -1,6 +1,6 @@
 name: kaeru
 description: "A powerful a comprehensive and efficient reactivity system for Flutter, inspired by Vue 3's @vue/reactivity."
-version: 0.1.0
+version: 0.1.1
 homepage: "https://github.com/tachibana-shin/flutter-kaeru"
 
 environment:
