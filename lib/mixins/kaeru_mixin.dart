@@ -13,10 +13,16 @@ import '../foundation/ref.dart';
 /// updates whenever its dependencies change.
 mixin KaeruMixin<T extends StatefulWidget> on State<T> {
   final _notifiersStore = <ChangeNotifier>{};
+  final _disposesStore = <VoidCallback>{};
   // ignore: avoid_shadowing_type_parameters
   T _autoDispose<T extends ChangeNotifier>(T notifier) {
     _notifiersStore.add(notifier);
     return notifier;
+  }
+
+  VoidCallback _autoDisposeFn(VoidCallback fn) {
+    _disposesStore.add(fn);
+    return fn;
   }
 
   @override
@@ -24,18 +30,24 @@ mixin KaeruMixin<T extends StatefulWidget> on State<T> {
     for (var notifier in _notifiersStore) {
       notifier.dispose();
     }
+    for (var fn in _disposesStore) {
+      fn();
+    }
 
     super.dispose();
   }
+
   /// Creates a reactive [Ref] with the given initial [value]. This can be
   /// used to store and notify changes to a mutable value over the lifetime
   /// of the widget.
-  Ref<U> ref<U>(U value) =>_autoDispose( Ref(value));
+  Ref<U> ref<U>(U value) => _autoDispose(Ref(value));
 
   /// Creates a reactive [Computed] with the provided [getter] function.
   /// The value is recomputed only when dependencies change and is guaranteed
   /// to notify listeners when it is updated.
-  Computed<U> computed<U>(U Function() getter) => _autoDispose(Computed(getter));
+  Computed<U> computed<U>(U Function() getter) =>
+      _autoDispose(Computed(getter));
+
   ///
   /// A mixin that extends [State] to provide reactive references and computed values.
   ///
@@ -48,4 +60,11 @@ mixin KaeruMixin<T extends StatefulWidget> on State<T> {
           immediate = false}) =>
       _autoDispose(AsyncComputed<U>(getValue,
           defaultValue: defaultValue, onError: onError, immediate: immediate));
+
+  VoidCallback watchEffect(VoidCallback callback) =>
+      _autoDisposeFn(watchEffect(callback));
+
+  VoidCallback watch(Iterable<Listenable?> source, VoidCallback callback,
+          {bool immediate = false}) =>
+      _autoDisposeFn(watch(source, callback, immediate: immediate));
 }
