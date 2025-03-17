@@ -20,7 +20,7 @@ Add this package to your `pubspec.yaml`:
 dependencies:
   kaeru:
     git:
-      url: https://github.com/tachibana-shin/flutter-kaeru.git
+      url: https://github.com/tachibana-shin/flutter_kaeru.git
 ```
 
 Import it in your project:
@@ -133,12 +133,14 @@ Handles computed values that depend on asynchronous operations.
 
 #### Parameters:
 
-| Parameter      | Type                       | Description                                             |
-| -------------- | -------------------------- | ------------------------------------------------------- |
-| `getter`       | `Future<T> Function()`     | A function returning a future value.                    |
-| `defaultValue` | `T?`                       | An optional initial value before computation completes. |
-| `onError`      | `Function(dynamic error)?` | An optional error handler.                              |
-| `immediate`    | `bool`                     | Whether to compute immediately.                         |
+| Parameter            | Type                       | Description                                             |
+| -------------------- | -------------------------- | ------------------------------------------------------- |
+| `getter`             | `Future<T> Function()`     | A function returning a future value.                    |
+| `defaultValue`       | `T?`                       | An optional initial value before computation completes. |
+| `beforeUpdate`       | `T? Function()`            | An optional function to run before updating the value.  |
+| `notifyBeforeUpdate` | `bool = true`              | Whether to notify listeners before updating the value.  |
+| `onError`            | `Function(dynamic error)?` | An optional error handler.                              |
+| `immediate`          | `bool`                     | Whether to compute immediately.                         |
 
 #### Example:
 

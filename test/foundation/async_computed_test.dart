@@ -52,5 +52,29 @@ void main() {
       asyncComputed.dispose(); // Cancelling previous computation
       expect(asyncComputed.value, isNull);
     });
+
+    test('should call beforeUpdate and notify listeners if notifyBeforeUpdate is true', () async {
+      int beforeUpdateCallCount = 0;
+      final asyncComputed = AsyncComputed<int>(
+        () async {
+          await Future.delayed(Duration(milliseconds: 100));
+          return 100;
+        },
+        defaultValue: 0,
+        beforeUpdate: () {
+          beforeUpdateCallCount++;
+          return 50;
+        },
+        notifyBeforeUpdate: true,
+        immediate: true,
+      );
+
+      await Future.delayed(Duration.zero);
+      expect(asyncComputed.value, equals(50));
+      await Future.delayed(Duration(milliseconds: 150));
+      expect(asyncComputed.value, equals(100));
+      await Future.delayed(Duration.zero);
+      expect(beforeUpdateCallCount, equals(1));
+    });
   });
 }
