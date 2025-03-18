@@ -92,11 +92,26 @@ class AsyncComputed<T> extends ReactiveNotifier {
 
   /// Adds a listener to track changes in the computed value.
   @override
+  /// Adds a listener to be notified when the computed value changes.
+  ///
+  /// The computation is triggered before adding the listener,
+  /// so that the listener can be notified of the initial value.
+  ///
+  /// Parameters:
+  ///   listener - The callback function to be notified when the value changes.
+  ///
+  /// Returns:
+  ///   None
   void addListener(VoidCallback listener) {
     _runDry();
     super.addListener(listener);
   }
 
+  /// Forces the computed value to the given [value], notifying listeners if the value changes.
+  /// 
+  /// - [value]: The new value to be set.
+  /// 
+  /// Returns nothing.
   void force(T? value) {
     if (_value != value) {
       _value = value;

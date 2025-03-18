@@ -125,7 +125,7 @@ class _CounterState extends State<Counter> with KaeruMixin, KaeruLifeMixin {
 class ShowFoo extends StatefulWidget {
   final Ref<int> foo;
 
-  ShowFoo({required this.foo});
+  const ShowFoo({super.key, required this.foo});
 
   @override
   createState() => _ShowFooState();

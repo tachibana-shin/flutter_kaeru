@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:notifier_plus/notifier_plus.dart';
 import 'package:kaeru/event_bus.dart';
@@ -46,7 +45,7 @@ class Computed<T> extends ReactiveNotifier with Watcher {
   bool _initialized = false;
   bool _updated = false;
 
-  /// Creates a new [Computed] object that uses the [getValue] function 
+  /// Creates a new [Computed] object that uses the [getValue] function
   /// to compute its value on demand.
   Computed(this._getValue) {
     onChange = oneCallTask(() {
@@ -56,7 +55,7 @@ class Computed<T> extends ReactiveNotifier with Watcher {
     dryRun = () => _value = _getValue();
   }
 
-  /// Triggers the computation if it has not been performed, and if 
+  /// Triggers the computation if it has not been performed, and if
   /// the value is updated, notifies listeners.
   void _runDry() {
     if (_updated) return;
@@ -76,7 +75,7 @@ class Computed<T> extends ReactiveNotifier with Watcher {
     if (_initialized && oldValue != _value) notifyListeners();
   }
 
-  /// Returns the current computed value, computing it if necessary 
+  /// Returns the current computed value, computing it if necessary
   /// and establishing a dependency for any watcher.
   @override
   T get value {
@@ -86,10 +85,27 @@ class Computed<T> extends ReactiveNotifier with Watcher {
   }
 
   @override
+  /// Adds a listener to be notified when the computed value changes.
+  ///
+  /// The computation is triggered before adding the listener,
+  /// so that the listener can be notified of the initial value.
   void addListener(VoidCallback listener) {
     _runDry();
 
     super.addListener(listener);
+  }
+
+  ///
+  /// A reactive class that computes a value on demand and notifies its listeners
+  /// when the value changes.
+  ///
+  /// Implements watcher functionality to observe dependencies and recalculates
+  /// its value if those dependencies change.
+  void force(T value) {
+    if (_value != value) {
+      _value = value;
+      notifyListeners();
+    }
   }
 
   /// Returns a string representation of this `Computed` object,
