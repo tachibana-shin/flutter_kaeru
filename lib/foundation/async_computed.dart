@@ -8,7 +8,7 @@ import '../shared/reactive_notifier.dart';
 ///
 /// This class allows you to track changes in a computed value derived from asynchronous operations.
 /// It automatically updates and notifies listeners whenever the underlying asynchronous operation completes.
-/// 
+///
 /// Example usage:
 /// ```dart
 /// final asyncValue = AsyncComputed(() async => await fetchData(), defaultValue: 'Loading...');
@@ -32,7 +32,7 @@ class AsyncComputed<T> extends ReactiveNotifier {
 
   /// Flag to track whether the computation has been initialized.
   bool _initialized = false;
-  
+
   /// A function to cancel the current computation if needed.
   VoidCallback? _cancel;
 
@@ -44,13 +44,12 @@ class AsyncComputed<T> extends ReactiveNotifier {
   /// - [notifyBeforeUpdate]: If true, notifies listeners when [beforeUpdate] sets a new value.
   /// - [onError]: Callback function for handling errors during async computation.
   /// - [immediate]: If true, starts the async computation immediately upon creation.
-  AsyncComputed(
-    this._getValue, 
-    {T? defaultValue, 
-    this.beforeUpdate, 
-    this.notifyBeforeUpdate = true, 
-    this.onError,
-    immediate = false}) {
+  AsyncComputed(this._getValue,
+      {T? defaultValue,
+      this.beforeUpdate,
+      this.notifyBeforeUpdate = true,
+      this.onError,
+      immediate = false}) {
     _value = defaultValue;
     if (immediate) _runDry();
   }
@@ -69,7 +68,7 @@ class AsyncComputed<T> extends ReactiveNotifier {
           if (_value != value) {
             _value = value;
             if (notifyBeforeUpdate) notifyListeners();
-          } 
+          }
         }
 
         final value = await _getValue();
@@ -96,6 +95,13 @@ class AsyncComputed<T> extends ReactiveNotifier {
   void addListener(VoidCallback listener) {
     _runDry();
     super.addListener(listener);
+  }
+
+  void force(T? value) {
+    if (_value != value) {
+      _value = value;
+      notifyListeners();
+    }
   }
 
   /// Disposes of the [AsyncComputed] instance, cancelling any ongoing computation.
