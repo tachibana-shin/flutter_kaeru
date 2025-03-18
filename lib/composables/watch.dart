@@ -13,7 +13,7 @@ VoidCallback watch(Iterable<Listenable?> source, VoidCallback callback,
   callback = oneCallTask(callback);
 
   // Merge the source into a single Listenable and add the callback as a listener.
-  final listenable = Listenable.merge(source)..addListener(callback);
+  final listenable = (source.firstOrNull ?? Listenable.merge(source))..addListener(callback);
 
   // If the immediate flag is true, call the callback immediately.
   if (immediate) callback();
