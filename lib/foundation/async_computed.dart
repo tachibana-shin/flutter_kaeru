@@ -49,7 +49,7 @@ class AsyncComputed<T> extends ReactiveNotifier {
     {T? defaultValue, 
     this.beforeUpdate, 
     this.notifyBeforeUpdate = true, 
-    this.onError, 
+    this.onError,
     immediate = false}) {
     _value = defaultValue;
     if (immediate) _runDry();
