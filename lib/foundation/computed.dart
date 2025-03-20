@@ -5,38 +5,43 @@ import 'package:kaeru/shared/watcher.dart';
 
 import '../shared/reactive_notifier.dart';
 
-/// A class that computes a value and notifies listeners when the value changes.
+/// A reactive class that computes a value on demand and notifies listeners
+/// when the value changes.
 ///
-/// The value is computed on demand, i.e. when the [value] getter is called.
-/// The computation is triggered by calling [run].
+/// This class acts as both a [ReactiveNotifier] and a [Watcher], allowing it
+/// to observe dependencies and recompute its value when those dependencies
+/// change. The computation is only triggered when [value] is accessed.
 ///
-/// The `Computed` class acts as a [ReactiveNotifier], which means it has a
-/// listener list and notifies listeners when the value changes.
+/// ## Features:
+/// - **Lazy Computation**: The value is computed only when accessed.
+/// - **Automatic Dependency Tracking**: Recomputes when observed values change.
+/// - **Efficient Updates**: Notifies listeners only if the computed value changes.
 ///
-/// The `Computed` class also acts as a [Watcher], which means it can be used
-/// to watch other reactive objects and recompute the value when the watched
-/// objects change.
+/// ## Example Usage:
 ///
-/// The value is stored in the [_value] field and can be accessed by calling
-/// the [value] getter.
+/// ```dart
+/// // Create reactive state variables
+/// final count = Ref<int>(0);
+/// final doubleCount = Computed(() => count.value * 2);
 ///
-/// The computation is stored in the [_getValue] field and can be accessed
-/// by calling the [dryRun] getter.
+/// // Access computed value (triggers computation)
+/// print(doubleCount.value); // Output: 0
 ///
-/// The computation is triggered by calling [run] which is stored in the
-/// [onChange] field.
+/// // Update dependency
+/// count.value = 5;
 ///
-/// The [_runDry] function is called when the value is accessed and the
-/// computation needs to be triggered.
+/// // Computed value updates automatically
+/// print(doubleCount.value); // Output: 10
 ///
-/// The [_updated] field is used to track whether the computation has been
-/// triggered or not.
+/// // Reactivity: Automatically recomputes when `count` changes
+/// watchEffect(() {
+///   print('Double count changed: ${doubleCount.value}');
+/// });
+/// ```
 ///
-/// The [_initialized] field is used to track whether the value has been
-/// computed before or not.
-///
-/// The `Computed` class also overrides the [toString] method to provide
-/// a useful string representation of the object.
+/// ## Notes:
+/// - The computation is **cached** until dependencies change.
+/// - Call `force(value)` to manually override the computed value.
 class Computed<T> extends ReactiveNotifier with Watcher {
   late T _value;
 
@@ -45,8 +50,9 @@ class Computed<T> extends ReactiveNotifier with Watcher {
   bool _initialized = false;
   bool _updated = false;
 
-  /// Creates a new [Computed] object that uses the [getValue] function
-  /// to compute its value on demand.
+  /// Creates a new [Computed] object that computes its value using [getValue].
+  ///
+  /// The computation is deferred until the [value] getter is accessed.
   Computed(this._getValue) {
     onChange = oneCallTask(() {
       _updated = false;
@@ -55,8 +61,7 @@ class Computed<T> extends ReactiveNotifier with Watcher {
     dryRun = () => _value = _getValue();
   }
 
-  /// Triggers the computation if it has not been performed, and if
-  /// the value is updated, notifies listeners.
+  /// Triggers computation if necessary and notifies listeners when the value changes.
   void _runDry() {
     if (_updated) return;
 
@@ -75,8 +80,9 @@ class Computed<T> extends ReactiveNotifier with Watcher {
     if (_initialized && oldValue != _value) notifyListeners();
   }
 
-  /// Returns the current computed value, computing it if necessary
-  /// and establishing a dependency for any watcher.
+  /// Returns the computed value, computing it if necessary.
+  ///
+  /// This method also establishes a dependency link with any active watcher.
   @override
   T get value {
     getCurrentWatcher()?.addDepend(this);
@@ -84,23 +90,18 @@ class Computed<T> extends ReactiveNotifier with Watcher {
     return _value;
   }
 
-  @override
-  /// Adds a listener to be notified when the computed value changes.
+  /// Adds a listener and ensures computation is performed before notifying.
   ///
-  /// The computation is triggered before adding the listener,
-  /// so that the listener can be notified of the initial value.
+  /// This guarantees that the initial computed value is available before the listener is triggered.
+  @override
   void addListener(VoidCallback listener) {
     _runDry();
-
     super.addListener(listener);
   }
 
+  /// Manually overrides the computed value and forces an update.
   ///
-  /// A reactive class that computes a value on demand and notifies its listeners
-  /// when the value changes.
-  ///
-  /// Implements watcher functionality to observe dependencies and recalculates
-  /// its value if those dependencies change.
+  /// This can be used to temporarily override the computed result.
   void force(T value) {
     if (_value != value) {
       _value = value;
@@ -108,8 +109,7 @@ class Computed<T> extends ReactiveNotifier with Watcher {
     }
   }
 
-  /// Returns a string representation of this `Computed` object,
-  /// including its current computed value.
+  /// Returns a string representation of the computed value.
   @override
   String toString() => '${describeIdentity(this)}($value)';
 }
