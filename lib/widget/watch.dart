@@ -26,12 +26,13 @@ class _WatchState extends State<Watch> {
   /// A [Computed] object that computes the widget subtree via the [builder]
   /// function, listening for any reactive changes that trigger a rebuild.
   late final Computed<Widget> _computed;
+  BuildContext? _context;
 
   /// Initializes the [_computed] field and sets up a listener that triggers
   /// a rebuild when dependencies change.
   @override
   void initState() {
-    _computed = Computed(() => widget.builder(context))..addListener(_refresh);
+    _computed = Computed(() => widget.builder(_context ?? context))..addListener(_refresh);
     super.initState();
   }
 
@@ -43,6 +44,7 @@ class _WatchState extends State<Watch> {
   /// Builds the widget subtree evaluated by the [_computed] object.
   @override
   Widget build(BuildContext context) {
+    _context = context;
     return _computed.value;
   }
 
