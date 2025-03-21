@@ -31,12 +31,10 @@ void main() {
       await tester.pumpWidget(
         Directionality(
           textDirection: TextDirection.ltr,
-          child: Watch(
-            (context) {
-              buildCount++;
-              return Text('Value: ${ref.value}');
-            },
-          ),
+          child: Watch(() {
+            buildCount++;
+            return Text('Value: ${ref.value}');
+          }),
         ),
       );
 
@@ -53,8 +51,8 @@ void main() {
     //       textDirection: TextDirection.ltr,
     //       child: Column(
     //         children: [
-    //           Watch(builder: (context) => Text('First: ${ref.value}')),
-    //           Watch(builder: (context) => Text('Second: ${ref.value}')),
+    //           Watch(builder: () => Text('First: ${ref.value}')),
+    //           Watch(builder: () => Text('Second: ${ref.value}')),
     //         ],
     //       ),
     //     ),

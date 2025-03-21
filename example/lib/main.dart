@@ -29,7 +29,7 @@ class App2 extends StatelessWidget {
 
   @override
   Widget build(context) {
-    return Watch((context) => Row(children: [
+    return Watch(() => Row(children: [
           ElevatedButton(
             onPressed: () {
               showCounter.value = !showCounter.value;
@@ -101,10 +101,10 @@ class _CounterState extends State<Counter> with KaeruMixin, KaeruLifeMixin {
           child: const Text("Increase bar"),
         ),
         const SizedBox(height: 16),
-        Watch((context) {
+        Watch(() {
           print('Watch render');
           if (fooGtTeen.value) {
-            return Watch((c) {
+            return Watch(() {
               print('Watch child 1 render');
 
               return Text("Bar: ${bar.value}");
@@ -113,7 +113,7 @@ class _CounterState extends State<Counter> with KaeruMixin, KaeruLifeMixin {
             return Text("Bar: ${bar.value}");
           }
         }),
-        Watch((c) {
+        Watch(() {
           print('Widget parent ShowFoo render');
           return bar.value % 2 == 0 ? SizedBox.shrink() : ShowFoo(foo: foo);
         })
@@ -148,8 +148,8 @@ class _ShowFooState extends State<ShowFoo> with KaeruListenMixin, KaeruMixin {
   @override
   Widget build(context) {
     return Column(children: [
-      Watch((context) => Text('ShowFoo: ${widget.foo.value}')),
-      Watch((c) => Text('foo * 2 = ${_fooDouble.value}'))
+      Watch(() => Text('ShowFoo: ${widget.foo.value}')),
+      Watch(() => Text('foo * 2 = ${_fooDouble.value}'))
     ]);
   }
 }
