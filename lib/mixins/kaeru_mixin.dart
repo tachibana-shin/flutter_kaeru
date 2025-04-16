@@ -1,5 +1,7 @@
 import 'package:flutter/widgets.dart';
 
+import '../composables/watch.dart';
+import '../composables/watch_effect.dart';
 import '../foundation/async_computed.dart';
 import '../foundation/computed.dart';
 import '../foundation/ref.dart';
@@ -100,7 +102,7 @@ mixin KaeruMixin<T extends StatefulWidget> on State<T> {
   ///
   /// The [watchEffect] instance is automatically disposed when the widget is disposed.
   VoidCallback watchEffect(VoidCallback callback) =>
-      _autoDisposeFn(watchEffect(callback));
+      _autoDisposeFn(watchEffect$(callback));
 
   /// Sets up a watcher on the given [source] and triggers the [callback] when any
   /// of the [Listenable] objects in the source change. If [immediate] is true,
@@ -112,5 +114,5 @@ mixin KaeruMixin<T extends StatefulWidget> on State<T> {
   /// The [watch] instance is automatically disposed when the widget is disposed.
   VoidCallback watch(Iterable<Listenable?> source, VoidCallback callback,
           {bool immediate = false}) =>
-      _autoDisposeFn(watch(source, callback, immediate: immediate));
+      _autoDisposeFn(watch$(source, callback, immediate: immediate));
 }

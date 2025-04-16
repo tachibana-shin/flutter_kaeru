@@ -60,7 +60,7 @@ class AsyncComputed<T> extends ReactiveNotifier {
     _initialized = true;
 
     int currentId = -1;
-    _cancel = watchEffect(() async {
+    _cancel = watchEffect$(() async {
       final id = ++currentId;
       try {
         if (beforeUpdate != null) {

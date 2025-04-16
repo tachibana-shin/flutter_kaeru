@@ -7,7 +7,7 @@ import 'package:notifier_plus/notifier_plus.dart';
 ///
 /// Returns a [VoidCallback] that can be used to remove the listener when it's
 /// no longer needed.
-VoidCallback watch(Iterable<Listenable?> source, VoidCallback callback,
+VoidCallback watch$(Iterable<Listenable?> source, VoidCallback callback,
     {bool immediate = false}) {
   // Wrap the callback in a one-call task to ensure it runs only once per change.
   callback = oneCallTask(callback);
