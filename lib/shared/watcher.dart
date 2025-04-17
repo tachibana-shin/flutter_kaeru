@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'reactive_notifier.dart';
 import '../event_bus.dart';
 
-mixin  class  Watcher<T> {
+mixin class Watcher<T> {
   late final VoidCallback onChange;
   late final T Function() dryRun;
 
@@ -30,6 +30,8 @@ mixin  class  Watcher<T> {
       } else {
         _listenable = null;
       }
+    } else {
+      watchers = oldWatchers;
     }
 
     return output;
