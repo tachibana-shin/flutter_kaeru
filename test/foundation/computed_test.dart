@@ -40,7 +40,7 @@ void main() {
       final computedValue = Computed(() => count.value + 1);
 
       int effectRuns = 0;
-      final stop = watchEffect(() {
+      final stop = watchEffect$(() {
         computedValue.value;
         effectRuns++;
       });

@@ -481,7 +481,7 @@ class _CounterState extends State<Counter> with KaeruMixin, KaeruLifeMixin {
       print('foo + bar = ${foo.value + bar.value}');
     });
 
-    watch([computedOnlyListen], () {
+    watch$([computedOnlyListen], () {
       print('computed only listen changed');
     });
 

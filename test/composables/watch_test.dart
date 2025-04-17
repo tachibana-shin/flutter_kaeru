@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:notifier_plus/notifier_plus.dart';
+import 'package:kaeru/composables/watch.dart';
 
 void main() {
   group('watch', () {
@@ -8,7 +8,7 @@ void main() {
       final notifier = ValueNotifier<int>(0);
       int callbackCount = 0;
 
-      final stopWatching = watch([notifier], () {
+      final stopWatching = watch$([notifier], () {
         callbackCount++;
       });
 
@@ -33,7 +33,7 @@ void main() {
       final notifier = ValueNotifier<int>(0);
       int callbackCount = 0;
 
-      watch([notifier], () {
+      watch$([notifier], () {
         callbackCount++;
       }, immediate: true);
 
@@ -45,7 +45,7 @@ void main() {
       final notifier = ValueNotifier<int>(0);
       int callbackCount = 0;
 
-      watch([notifier], () {
+      watch$([notifier], () {
         callbackCount++;
       });
 

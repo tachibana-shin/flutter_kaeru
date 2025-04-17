@@ -42,7 +42,7 @@ void main() {
       final ref = Ref<int>(1);
       int effectRuns = 0;
 
-      final stop = watchEffect(() {
+      final stop = watchEffect$(() {
         ref.value;
         effectRuns++;
       });

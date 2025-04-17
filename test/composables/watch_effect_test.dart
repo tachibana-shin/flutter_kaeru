@@ -8,7 +8,7 @@ void main() {
       final ref = Ref<int>(0);
       int effectRuns = 0;
 
-      final stop = watchEffect(() {
+      final stop = watchEffect$(() {
         effectRuns = ref.value; // Dependency tracking
       });
 
@@ -31,7 +31,7 @@ void main() {
       final ref = Ref<int>(42);
       int effectRuns = 0;
 
-      watchEffect(() {
+      watchEffect$(() {
         effectRuns = ref.value;
       });
 
@@ -44,7 +44,7 @@ void main() {
       final ref = Ref<int>(0);
       int effectRuns = 0;
 
-      final stop = watchEffect(() {
+      final stop = watchEffect$(() {
         effectRuns = ref.value;
       });
 
