@@ -1,3 +1,6 @@
+## 0.1.10
+* Fix bug name global function `watch` to `watch$` and `watchEffect` to `watchEffect$`. In mixin `KaeruMixin` normal use
+
 ## 0.1.9
 * Remove `context` in `Watch`. Now you can use
 ```dart
