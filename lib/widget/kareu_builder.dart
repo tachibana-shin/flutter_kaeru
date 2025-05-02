@@ -2,17 +2,20 @@ import 'package:flutter/widgets.dart';
 import 'package:kaeru/kaeru.dart';
 
 class KaeruBuilder extends StatefulWidget {
-  final Widget Function(BuildContext context) builder;
+  final Widget Function(KaeruBuilderState context) builder;
 
-  const KaeruBuilder(this.builder, {super.key});
+  const KaeruBuilder({
+    super.key,
+    required this.builder,
+  });
 
   @override
-  createState() => _KaeruBuilderState();
+  createState() => KaeruBuilderState();
 }
 
-class _KaeruBuilderState extends State<KaeruBuilder> with KaeruMixin {
+class KaeruBuilderState extends State<KaeruBuilder> with KaeruMixin {
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context);
+    return widget.builder(this);
   }
 }
