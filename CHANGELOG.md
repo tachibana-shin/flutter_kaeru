@@ -1,3 +1,6 @@
+## 0.1.12
+* Fix typo
+
 ## 0.1.11
 * Add `KaeruBuilder`
 
