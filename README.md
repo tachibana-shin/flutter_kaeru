@@ -208,6 +208,17 @@ Watch(
 )
 ```
 
+### `KaeruBuilder` (Builder for Kaeru)
+
+### Example:
+```dart
+KaeruBuilder((context) {
+  final counter = context.ref(0);
+
+  return Watch(() => Text(counter.value.toString()));
+});
+```
+
 ### 6️⃣ **Integration with ValueNotifier & ChangeNotifier**
 
 #### `ValueNotifier.toRef()`
@@ -404,7 +415,6 @@ class _MyComponentState extends State<MyComponent> with KaeruListenMixin<MyCompo
 | `Watch` Widget          | ✅        |
 | `ValueNotifier.toRef()` | ✅        |
 | `ReactiveNotifier<T>`   | ✅        |
-| `VueNotifier.toRef()`   | ✅        |
 
 This package provides an intuitive and efficient reactivity system for Flutter, making state management much easier and more performant. 🚀
 
