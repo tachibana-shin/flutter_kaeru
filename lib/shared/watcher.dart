@@ -12,7 +12,7 @@ mixin class WatcherRaw<T> {
   Set<ReactiveNotifier> watchers = {};
   Listenable? _listenable;
 
-  List<Computed> computes = [];
+  Map<int, Computed> computes = {};
   int currentIndexCompute = 0;
 
   void addDepend(ReactiveNotifier ref) {
@@ -20,11 +20,11 @@ mixin class WatcherRaw<T> {
   }
 
   Computed? getCC() {
-    return this.computes.elementAtOrNull(currentIndexCompute++);
+    return computes[currentIndexCompute++];
   }
 
   Computed setCC(Computed cc) {
-    return this.computes[currentIndexCompute - 1] = cc;
+    return computes[currentIndexCompute - 1] = cc;
   }
 
   T run() {
@@ -56,7 +56,7 @@ mixin class WatcherRaw<T> {
 
     watchers.clear();
 
-    for (final compute in computes) {
+    for (final compute in computes.values) {
       compute.dispose();
     }
 

@@ -18,7 +18,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         home: Scaffold(
             appBar: AppBar(title: const Text("Kaeru Example")),
-            body: Padding(padding: const EdgeInsets.all(16.0), child: TestUsePick())));
+            body: Padding(
+                padding: const EdgeInsets.all(16.0), child: TestUsePick())));
   }
 }
 
@@ -162,20 +163,33 @@ class TestUsePick extends StatefulWidget {
 }
 
 class _TestUsePickState extends State<TestUsePick> with KaeruMixin {
-  late final map = ref({'counter': 0});
+  late final map = ref({'counter': 0, 'bar': 0});
 
   @override
   Widget build(context) {
     return ListView(
       children: [
-        Watch(() {
-          print('renfd');
-          return Text('counter = ${map.value['counter']}');
-        }),
+        Row(children: [
+          Watch(() {
+            final counter = usePick(map, (value) => value['counter']);
+            print('renfd');
+            return Text('counter = ${counter.value}');
+          }),
+          Watch(() {
+            print('renfd bar');
+            return Text('bar = ${map.value['bar']}');
+          })
+        ]),
         TextButton(
-            onPressed: () =>
-                map.value = {...map.value, 'counter': map.value['counter']! + 1},
-            child: Text('counter++'))
+          onPressed: () =>
+              map.value = {...map.value, 'counter': map.value['counter']! + 1},
+          child: Text('counter++'),
+        ),
+        TextButton(
+          onPressed: () =>
+              map.value = {...map.value, 'bar': map.value['bar']! + 1},
+          child: Text('bar++'),
+        )
       ],
     );
   }

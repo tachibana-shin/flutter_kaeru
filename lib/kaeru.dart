@@ -1,3 +1,4 @@
+export 'composables/use_pick.dart';
 export 'composables/watch_effect.dart';
 export 'composables/watch.dart';
 
