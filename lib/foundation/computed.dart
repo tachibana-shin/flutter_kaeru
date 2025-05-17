@@ -42,7 +42,7 @@ import '../shared/reactive_notifier.dart';
 /// ## Notes:
 /// - The computation is **cached** until dependencies change.
 /// - Call `force(value)` to manually override the computed value.
-class Computed<T> extends ReactiveNotifier with Watcher {
+class Computed<T> extends ReactiveNotifier<T> with WatcherRaw<T>, Watcher<T> {
   late T _value;
 
   final T Function() _getValue;

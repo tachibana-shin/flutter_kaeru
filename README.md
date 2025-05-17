@@ -242,6 +242,31 @@ valueNotifier.value = 10;  // ✅ Ref updates automatically
 
 Adds `.toRef()` to `ValueNotifier` to integrate seamlessly.
 
+### 7️⃣ **Selector: `usePick`**
+
+Creates a computed value that tracks only the selected part of a reactive object, optimizing updates.
+
+#### Parameters:
+
+| Parameter   | Type                         | Description                                      |
+| ----------- | ---------------------------- | ------------------------------------------------ |
+| `ctx`       | `ReactiveNotifier<T>`        | The reactive object to select from.              |
+| `selector`  | `U Function(T value)`        | Function to select a value from the object.      |
+
+#### Example:
+
+```dart
+final map = Ref({'foo': 0, 'bar': 0});
+
+Watch(() {
+  // Only recomputes when 'foo' changes
+  final foo = usePick(map, (value) => value['foo']);
+  print(foo.value); // 0
+});
+
+map.value = {...map.value, 'foo': 1};
+```
+
 ---
 
 ### 📌 Kaeru Lifecycle & Listening Mixins

@@ -1,15 +1,15 @@
 import 'shared/watcher.dart';
 
-Watcher? _currentWatcher;
-Watcher? setCurrentWatcher(Watcher? watcher) {
+WatcherRaw? _currentWatcher;
+WatcherRaw? setCurrentWatcher(WatcherRaw? watcher) {
   final oldWatcher = _currentWatcher;
   _currentWatcher = watcher;
   return oldWatcher;
 }
-Watcher? getCurrentWatcher() {
+WatcherRaw? getCurrentWatcher() {
   return _currentWatcher;
 }
 
-restoreCurrentWatcher(Watcher? oldWatcher) {
+restoreCurrentWatcher(WatcherRaw? oldWatcher) {
   _currentWatcher = oldWatcher;
 }
