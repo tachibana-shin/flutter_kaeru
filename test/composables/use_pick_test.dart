@@ -157,15 +157,19 @@ void main() {
       final map = Ref({'foo': 0, 'bar': 0});
 
       int countCall = 0;
+      int depends = 0;
       watchEffect$(() {
         usePick(map, (value) => value['foo']);
 
+        // ignore: invalid_use_of_protected_member
+        depends = getCurrentWatcher()!.watchers.length;
         countCall++;
       });
 
       await Future.delayed(Duration.zero);
 
       expect(countCall, equals(1));
+      expect(depends, equals(0));
 
       for (int i = 0; i < 10; i++) {
         map.value = {
@@ -176,6 +180,7 @@ void main() {
         await Future.delayed(Duration.zero);
 
         expect(countCall, equals(1));
+        expect(depends, equals(0));
       }
     });
 
@@ -183,15 +188,19 @@ void main() {
       final map = Ref({'foo': 0, 'bar': 0});
 
       int countCall = 0;
+      int depends = 0;
       watchEffect$(() {
         usePick(map, (value) => value['foo']).value;
 
+        // ignore: invalid_use_of_protected_member
+        depends = getCurrentWatcher()!.watchers.length;
         countCall++;
       });
 
       await Future.delayed(Duration.zero);
 
       expect(countCall, equals(1));
+      expect(depends, equals(1));
 
       for (int i = 0; i < 10; i++) {
         map.value = {
@@ -202,6 +211,7 @@ void main() {
         await Future.delayed(Duration.zero);
 
         expect(countCall, equals(i + 2));
+        expect(depends, equals(1));
       }
     });
   });
