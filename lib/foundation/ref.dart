@@ -37,7 +37,7 @@ import '../shared/reactive_notifier.dart';
 /// - **Reactive State**: When `value` is accessed, it registers dependencies.
 /// - **Efficient Updates**: Notifies listeners only if the value actually changes.
 /// - **Seamless Integration**: Works with `watchEffect()` and Flutter's `ValueListenable`.
-class Ref<T> extends ReactiveNotifier implements ValueListenable<T> {
+class Ref<T> extends ReactiveNotifier<T> implements ValueListenable<T> {
   late final VoidCallback _onChange;
 
   /// Initializes a new [Ref] with the given initial [value].

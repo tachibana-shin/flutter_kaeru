@@ -13,7 +13,7 @@ import '../shared/reactive_notifier.dart';
 /// ```dart
 /// final asyncValue = AsyncComputed(() async => await fetchData(), defaultValue: 'Loading...');
 /// ```
-class AsyncComputed<T> extends ReactiveNotifier {
+class AsyncComputed<T> extends ReactiveNotifier<T?> {
   /// The current computed value.
   late T? _value;
 
