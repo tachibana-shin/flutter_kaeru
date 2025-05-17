@@ -8,12 +8,16 @@ mixin class WatcherRaw<T> {
   late final VoidCallback onChange;
   late final T Function() dryRun;
 
+  bool _firstRun = true;
+
   @protected
   Set<ReactiveNotifier> watchers = {};
   Listenable? _listenable;
 
   Map<int, Picker> computes = {};
   int currentIndexCompute = 0;
+
+  final Set<VoidCallback> _cleanups = {};
 
   void addDepend(ReactiveNotifier ref) {
     watchers.add(ref);
@@ -27,7 +31,24 @@ mixin class WatcherRaw<T> {
     return computes[currentIndexCompute - 1] = cc;
   }
 
+  void onCleanup(VoidCallback callback) {
+    _cleanups.add(callback);
+  }
+
+  void _runCleanup() {
+    for (final cb in _cleanups) {
+      cb();
+    }
+    _cleanups.clear();
+  }
+
   T run() {
+    if (_firstRun) {
+      _firstRun = false;
+    } else {
+      _runCleanup();
+    }
+
     final oldWatchers = watchers;
     watchers = {};
 
@@ -51,7 +72,7 @@ mixin class WatcherRaw<T> {
       final compute = computes[i];
       if (compute == null) break;
 
-      assert(!watchers.contains(compute),
+      assert(!watchers.contains(compute.compute),
           'Watcher should not be used in computed');
 
       compute.dispose();
@@ -73,6 +94,8 @@ mixin class WatcherRaw<T> {
     }
 
     computes.clear();
+
+    _runCleanup();
   }
 }
 

@@ -95,7 +95,7 @@ class Computed<T> extends ReactiveNotifier<T> with WatcherRaw<T>, Watcher<T> {
   /// This guarantees that the initial computed value is available before the listener is triggered.
   @override
   void addListener(VoidCallback listener) {
-    _runDry();
+    value;
     super.addListener(listener);
   }
 

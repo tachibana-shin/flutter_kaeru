@@ -1,3 +1,6 @@
+export 'composables/exception/no_watcher_found_exception.dart';
+export 'composables/next_tick.dart';
+export 'composables/on_watcher_cleanup.dart';
 export 'composables/use_pick.dart';
 export 'composables/watch_effect.dart';
 export 'composables/watch.dart';

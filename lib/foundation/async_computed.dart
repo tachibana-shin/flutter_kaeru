@@ -103,7 +103,7 @@ class AsyncComputed<T> extends ReactiveNotifier<T?> {
   /// Returns:
   ///   None
   void addListener(VoidCallback listener) {
-    _runDry();
+    value;
     super.addListener(listener);
   }
 

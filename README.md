@@ -267,6 +267,70 @@ Watch(() {
 map.value = {...map.value, 'foo': 1};
 ```
 
+### 8️⃣ **Cleanup: `onWatcherCleanup`**
+
+Registers a callback to be called when the watcher or computed is refreshed or disposed.
+
+#### Parameters:
+
+| Parameter   | Type           | Description                                 |
+| ----------- | -------------- | ------------------------------------------- |
+| `callback`  | `VoidCallback` | Function to be called on cleanup/dispose.   |
+
+#### Example:
+
+```dart
+watchEffect$(() {
+  // ... reactive code ...
+  onWatcherCleanup(() {
+    // cleanup logic here
+  });
+});
+
+// or widget Watch
+
+Watch(() {
+  onWatcherCleanup(() {
+    // cleanup logic here
+  });
+
+  ////
+});
+
+// or Computed
+
+Computed(() {
+  onWatcherCleanup(() {
+    // cleanup logic here
+  });
+
+  ////
+});
+
+```
+
+---
+
+### 9️⃣ **Utility: `nextTick`**
+
+Runs a callback after the current microtask queue is flushed (similar to `Promise.resolve().then()` in JS).
+
+#### Parameters:
+
+| Parameter   | Type            | Description                                 |
+| ----------- | --------------- | ------------------------------------------- |
+| `callback`  | `VoidCallback?` | (Optional) Function to run after the tick.  |
+
+#### Example:
+
+```dart
+await nextTick();
+// or
+await nextTick(() {
+  // code to run after the tick
+});
+```
+
 ---
 
 ### 📌 Kaeru Lifecycle & Listening Mixins
