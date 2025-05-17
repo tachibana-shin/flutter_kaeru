@@ -18,7 +18,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         home: Scaffold(
             appBar: AppBar(title: const Text("Kaeru Example")),
-            body: Padding(padding: const EdgeInsets.all(16.0), child: App2())));
+            body: Padding(padding: const EdgeInsets.all(16.0), child: TestUsePick())));
   }
 }
 
@@ -151,5 +151,32 @@ class _ShowFooState extends State<ShowFoo> with KaeruListenMixin, KaeruMixin {
       Watch(() => Text('ShowFoo: ${widget.foo.value}')),
       Watch(() => Text('foo * 2 = ${_fooDouble.value}'))
     ]);
+  }
+}
+
+///////////////////////////// test usePick
+
+class TestUsePick extends StatefulWidget {
+  @override
+  createState() => _TestUsePickState();
+}
+
+class _TestUsePickState extends State<TestUsePick> with KaeruMixin {
+  late final map = ref({'counter': 0});
+
+  @override
+  Widget build(context) {
+    return ListView(
+      children: [
+        Watch(() {
+          print('renfd');
+          return Text('counter = ${map.value['counter']}');
+        }),
+        TextButton(
+            onPressed: () =>
+                map.value = {...map.value, 'counter': map.value['counter']! + 1},
+            child: Text('counter++'))
+      ],
+    );
   }
 }

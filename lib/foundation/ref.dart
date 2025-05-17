@@ -11,7 +11,7 @@ import '../shared/reactive_notifier.dart';
 /// It also extends [ReactiveNotifier] to integrate with the reactive ecosystem.
 ///
 /// ## Example Usage:
-/// 
+///
 /// ```dart
 /// // Create a reactive reference with an initial value
 /// final count = Ref<int>(0);
@@ -47,7 +47,7 @@ class Ref<T> extends ReactiveNotifier implements ValueListenable<T> {
     _onChange = oneCallTask(() => notifyListeners());
   }
 
-  /// The current value of this [Ref]. 
+  /// The current value of this [Ref].
   ///
   /// When accessed, it registers itself as a dependency for any active watcher.
   @override
