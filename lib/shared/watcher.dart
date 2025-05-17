@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../foundation/computed.dart';
+import '../composables/use_pick.dart';
 import 'reactive_notifier.dart';
 import '../event_bus.dart';
 
@@ -12,18 +12,18 @@ mixin class WatcherRaw<T> {
   Set<ReactiveNotifier> watchers = {};
   Listenable? _listenable;
 
-  Map<int, Computed> computes = {};
+  Map<int, Picker> computes = {};
   int currentIndexCompute = 0;
 
   void addDepend(ReactiveNotifier ref) {
     watchers.add(ref);
   }
 
-  Computed? getCC() {
+  Picker? getCC() {
     return computes[currentIndexCompute++];
   }
 
-  Computed setCC(Computed cc) {
+  Picker setCC(Picker cc) {
     return computes[currentIndexCompute - 1] = cc;
   }
 
@@ -44,6 +44,18 @@ mixin class WatcherRaw<T> {
       }
     } else {
       watchers = oldWatchers;
+    }
+
+    // clear computes not used
+    for (int i = currentIndexCompute;; i++) {
+      final compute = computes[i];
+      if (compute == null) break;
+
+      assert(!watchers.contains(compute),
+          'Watcher should not be used in computed');
+
+      compute.dispose();
+      computes.remove(i);
     }
 
     currentIndexCompute = 0;

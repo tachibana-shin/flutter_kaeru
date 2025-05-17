@@ -95,5 +95,114 @@ void main() {
         expect(countComputes, equals(2));
       }
     });
+
+    test('should usePick clear compute not used', () async {
+      final map = Ref({'foo': 0, 'bar': 0});
+
+      int countComputes = 0;
+      watchEffect$(() {
+        final foo = usePick(map, (value) => value['foo']);
+
+        foo.value;
+
+        if (foo.value! <= 2) {
+          final bar = usePick(map, (value) => value['bar']);
+          bar.value;
+        }
+
+        final watcher = getCurrentWatcher()!;
+        countComputes = watcher.computes.length;
+      });
+
+      await Future.delayed(Duration.zero);
+
+      expect(countComputes, equals(2));
+
+      map.value = {
+        ...map.value,
+        'foo': map.value['foo']! + 1,
+      };
+
+      await Future.delayed(Duration.zero);
+
+      expect(countComputes, equals(2));
+
+      map.value = {
+        ...map.value,
+        'foo': map.value['foo']! + 1,
+      };
+
+      await Future.delayed(Duration.zero);
+
+      expect(countComputes, equals(2));
+
+      map.value = {
+        ...map.value,
+        'foo': map.value['foo']! + 1,
+      };
+
+      await Future.delayed(Duration.zero);
+
+      map.value = {
+        ...map.value,
+        'foo': map.value['foo']! + 1,
+      };
+
+      await Future.delayed(Duration.zero);
+
+      expect(countComputes, equals(1));
+    });
+
+    test('should watcher not update if picker not get value', () async {
+      final map = Ref({'foo': 0, 'bar': 0});
+
+      int countCall = 0;
+      watchEffect$(() {
+        usePick(map, (value) => value['foo']);
+
+        countCall++;
+      });
+
+      await Future.delayed(Duration.zero);
+
+      expect(countCall, equals(1));
+
+      for (int i = 0; i < 10; i++) {
+        map.value = {
+          ...map.value,
+          'foo': map.value['foo']! + 1,
+        };
+
+        await Future.delayed(Duration.zero);
+
+        expect(countCall, equals(1));
+      }
+    });
+
+    test('should watcher update if picker get value', () async {
+      final map = Ref({'foo': 0, 'bar': 0});
+
+      int countCall = 0;
+      watchEffect$(() {
+        usePick(map, (value) => value['foo']).value;
+
+        countCall++;
+      });
+
+      await Future.delayed(Duration.zero);
+
+      expect(countCall, equals(1));
+
+      for (int i = 0; i < 10; i++) {
+        map.value = {
+          ...map.value,
+          'foo': map.value['foo']! + 1,
+        };
+
+        await Future.delayed(Duration.zero);
+
+        expect(countCall, equals(i + 2));
+      }
+    });
   });
 }
