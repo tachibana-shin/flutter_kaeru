@@ -1,3 +1,6 @@
+## 0.1.13
+* Add `usePick` in `Watch`
+
 ## 0.1.12
 * Fix typo
 
