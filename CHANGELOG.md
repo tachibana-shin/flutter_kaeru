@@ -1,3 +1,6 @@
+## 0.1.14
+* Add `onWatcherCleanup` and `nextTick`
+
 ## 0.1.13
 * Add `usePick` in `Watch`
 
