@@ -4,6 +4,15 @@ import 'package:kaeru/kaeru.dart';
 
 void main() {
   group('usePick', () {
+    test('should only use in watcher', () {
+      try {
+        usePick(Ref(0), (value) => value);
+        fail('should throw error');
+      } catch (e) {
+        expect(e, isA<NoWatcherFoundException>());
+      }
+    });
+
     test('should not emit when no changes', () async {
       final map = Ref({'foo': 0, 'bar': 0});
 
