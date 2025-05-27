@@ -69,6 +69,11 @@ class Ref<T> extends ReactiveNotifier<T> implements ValueListenable<T> {
     _onChange();
   }
 
+  /// notifyListeners
+  void notify() {
+    _onChange();
+  }
+
   /// Returns a string representation containing the runtime type and the current [value].
   @override
   String toString() => '${describeIdentity(this)}($value)';
