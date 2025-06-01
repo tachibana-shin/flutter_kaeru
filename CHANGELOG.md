@@ -1,3 +1,6 @@
+## 0.1.15
+* feat: add `dependencies` option to `Watch` widget reactive static dependencies
+
 ## 0.1.14
 * Add `onWatcherCleanup` and `nextTick`
 
