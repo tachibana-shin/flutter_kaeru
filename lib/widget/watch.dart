@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/foundation.dart';
 import '../foundation/computed.dart';
 
 /// A widget that automatically rebuilds when dependencies used inside its
@@ -14,9 +14,14 @@ class Watch extends StatefulWidget {
   /// to rebuild.
   final Widget Function() builder;
 
-  /// Creates a new [Watch] widget that rebuilds whenever the [builder]'s
-  /// dependencies are updated.
-  const Watch(this.builder, {super.key});
+  /// Optional dependencies. If this list changes (by content), [onUpdate] is triggered.
+  final List<dynamic>? dependencies;
+
+  const Watch(
+    this.builder, {
+    super.key,
+    this.dependencies,
+  });
 
   @override
   State<Watch> createState() => _WatchState();
@@ -31,11 +36,19 @@ class _WatchState extends State<Watch> {
   /// a rebuild when dependencies change.
   @override
   void initState() {
-    _computed = Computed(() => widget.builder())..addListener(_refresh);
     super.initState();
+    _computed = Computed(() => widget.builder())..addListener(_refresh);
   }
 
-  /// Called when the computed value changes. Triggers a rebuild of this widget.
+  @override
+  void didUpdateWidget(covariant Watch oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (!listEquals(widget.dependencies, oldWidget.dependencies)) {
+      _computed.notify();
+    }
+  }
+
   void _refresh() {
     setState(() {});
   }

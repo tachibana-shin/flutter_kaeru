@@ -109,6 +109,10 @@ class Computed<T> extends ReactiveNotifier<T> with WatcherRaw<T>, Watcher<T> {
     }
   }
 
+  void notify() {
+    notifyListeners();
+  }
+
   /// Returns a string representation of the computed value.
   @override
   String toString() => '${describeIdentity(this)}($value)';

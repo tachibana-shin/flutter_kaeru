@@ -199,6 +199,53 @@ class _MyWidgetState extends State<MyWidget> with KaeruMixin {
 #### `Watch` (Automatic UI Rebuilds)
 
 A widget that automatically updates when its dependencies change.
+>>> [!TIP]
+>>> If in KaeruMixin you have use `watch$` with `watch` and `watchEffect$` with `watchEffect`
+
+By default `Watch` doesn"t care about external changes e.g.
+```dart
+class ExampleState extends State<Example> {
+  int counter = 1;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        counter++;
+      });
+    });
+  }
+
+  @override
+  Widget build(context) {
+    return Watch(() => Text('counter = $counter')); // every is 'counter = 1'
+  }
+}
+```
+so if static dependency is used in `Watch` you need to set it in the `dependencies` option
+```dart
+class ExampleState extends State<Example> {
+  int counter = 1;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        counter++;
+      });
+    });
+  }
+
+  @override
+  Widget build(context) {
+    return Watch(dependencies: [counter], () => Text('counter = $counter')); // amazing, now 'counter = 1', 'counter = 2'....
+  }
+}
+```
 
 #### Example:
 
