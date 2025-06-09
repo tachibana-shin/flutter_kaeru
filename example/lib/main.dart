@@ -230,6 +230,7 @@ final Foo = defineWidget((FooProps props) {
 typedef CounterProps = ({VoidCallback onMax});
 final counterDefine = defineWidget((CounterProps props) {
   final counter = $ref(0);
+  final (isHover: isHover, hoverWrap: hoverWrap) = useHoverWidget();
 
   print('Render once');
 
@@ -243,7 +244,9 @@ final counterDefine = defineWidget((CounterProps props) {
         children: [
           TextButton(
               onPressed: onPressed, child: Text('counter = $counter.value')),
-          Foo((counter: counter))
+          Text('Foo is hoving: ${isHover.value}',
+              style: TextStyle(color: Colors.red)),
+          hoverWrap((_) => Foo((counter: counter)))
         ],
       );
 });

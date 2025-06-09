@@ -13,6 +13,14 @@
 > [!TIP]
 > If in KaeruMixin you have use `watch$` with `watch` and `watchEffect$` with `watchEffect`
 
+## List composables
+- `useContext`
+- `useHoverWidget`
+- `useRef`
+- `useState`
+- `useWidgetBounding`
+- `useWidgetSize`
+
 ---
 
 ## 📦 Installation

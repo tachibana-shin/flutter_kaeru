@@ -1,4 +1,8 @@
 export 'composables/use_context.dart';
+export 'composables/use_hover_widget.dart';
+export 'composables/use_ref.dart';
+export 'composables/use_widget_bounding.dart';
+export 'composables/use_widget_size.dart';
 export 'composables/use_state.dart';
 export 'auto_dispose.dart';
 export 'bus.dart';
