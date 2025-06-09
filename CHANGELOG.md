@@ -1,3 +1,6 @@
+## 0.1.16
+* feat: add `defineWidget`
+
 ## 0.1.15
 * feat: add `dependencies` option to `Watch` widget reactive static dependencies
 
