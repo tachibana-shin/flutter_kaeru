@@ -1,29 +1,23 @@
 import 'package:flutter/widgets.dart';
-import 'package:kaeru/kaeru.dart';
 
-KaeruLifeMixin _getLife() {
-  final ctx = getCurrentState();
-  if (ctx == null) throw Exception('Current context is null');
-
-  return ctx;
-}
+import 'composables/use_state.dart';
 
 void $onMounted(VoidCallback callback) {
-  _getLife().onMounted(callback);
+  useState().onMounted(callback);
 }
 
 void $onDependenciesChanged(VoidCallback callback) {
-  _getLife().onDependenciesChanged(callback);
+  useState().onDependenciesChanged(callback);
 }
 
 void $onUpdated(VoidCallback callback) {
-  _getLife().onUpdated(callback);
+  useState().onUpdated(callback);
 }
 
 void $onBeforeUnmount(VoidCallback callback) {
-  _getLife().onBeforeUnmount(callback);
+  useState().onBeforeUnmount(callback);
 }
 
 void $onDeactivated(VoidCallback callback) {
-  _getLife().onDeactivated(callback);
+  useState().onDeactivated(callback);
 }

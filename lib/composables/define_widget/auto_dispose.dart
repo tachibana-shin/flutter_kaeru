@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'bus.dart';
+import 'composables/use_state.dart';
 
 T autoContextDispose<T extends ChangeNotifier>(T notifier) {
-  final ctx = getCurrentState();
-  if (ctx == null) throw Exception('Current context is null');
-
-  ctx.notifiersStore.add(notifier);
+  useState().notifiersStore.add(notifier);
   return notifier;
 }
 
 VoidCallback autoContextDisposeFn(VoidCallback fn) {
-  final ctx = getCurrentState();
-  if (ctx == null) throw Exception('Current context is null');
-
-  ctx.disposesStore.add(fn);
+  useState().disposesStore.add(fn);
   return fn;
 }
