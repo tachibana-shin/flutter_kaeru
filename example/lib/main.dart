@@ -19,7 +19,12 @@ class _MyAppState extends State<MyApp> {
         home: Scaffold(
             appBar: AppBar(title: const Text("Kaeru Example")),
             body: Padding(
-                padding: const EdgeInsets.all(16.0), child: TestUsePick())));
+                padding: const EdgeInsets.all(16.0),
+                child: Column(children: [
+                  TextButton(
+                      child: Text('refresh'), onPressed: () => setState(() {})),
+                  counterDefine((onMax: () => print('OK'))),
+                ]))));
   }
 }
 
@@ -194,3 +199,51 @@ class _TestUsePickState extends State<TestUsePick> with KaeruMixin {
     );
   }
 }
+
+//============================= test define_widget //
+
+typedef FooProps = ({Ref<int> counter});
+// ignore: non_constant_identifier_names
+final Foo = defineWidget((FooProps props) {
+  final foo = $ref(0);
+
+  void onPressed() {
+    foo.value++;
+  }
+
+  void resetParent() {
+    props.counter.value = 0;
+  }
+
+  return (ctx) => Row(
+        children: [
+          TextButton(
+              onPressed: onPressed,
+              child:
+                  Text('counter + foo = ${props.counter.value + foo.value}')),
+          TextButton(
+              onPressed: resetParent, child: Text('Reset counter parent'))
+        ],
+      );
+});
+
+typedef CounterProps = ({VoidCallback onMax});
+final counterDefine = defineWidget((CounterProps props) {
+  final counter = $ref(0);
+
+  print('Render once');
+
+  void onPressed() {
+    counter.value++;
+
+    if (counter.value > 10) props.onMax();
+  }
+
+  return (ctx) => Row(
+        children: [
+          TextButton(
+              onPressed: onPressed, child: Text('counter = $counter.value')),
+          Foo((counter: counter))
+        ],
+      );
+});

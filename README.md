@@ -36,6 +36,59 @@ import 'package:kaeru/kaeru.dart';
 
 ## 🏗 API Documentation
 
+### **Widget: `defineWidget`**
+View example. All `life` and `reactivity` ready with name `$ + <name>` (e.g: `$ref`, `$computed`, `$watch`, `$onBeforeUnmount`...)
+
+#### Example
+```dart
+typedef FooProps = ({Ref<int> counter});
+// ignore: non_constant_identifier_names
+final Foo = defineWidget((FooProps props) {
+  final foo = $ref(0);
+
+  void onPressed() {
+    foo.value++;
+  }
+
+  void resetParent() {
+    props.counter.value = 0;
+  }
+
+  return (ctx) => Row(
+        children: [
+          TextButton(
+              onPressed: onPressed,
+              child:
+                  Text('counter + foo = ${props.counter.value + foo.value}')),
+          TextButton(
+              onPressed: resetParent, child: Text('Reset counter parent'))
+        ],
+      );
+});
+
+typedef CounterProps = ({VoidCallback onMax});
+// ignore: non_constant_identifier_names
+final Counter = defineWidget((CounterProps props) {
+  final counter = $ref(0);
+
+  print('Render once');
+
+  void onPressed() {
+    counter.value++;
+
+    if (counter.value > 10) props.onMax();
+  }
+
+  return (ctx) => Row(
+        children: [
+          TextButton(
+              onPressed: onPressed, child: Text('counter = $counter.value')),
+          Foo((counter: counter))
+        ],
+      );
+});
+```
+
 ### 1️⃣ **Reactive State: `Ref<T>`**
 
 Represents a reactive variable that automatically triggers updates when changed.

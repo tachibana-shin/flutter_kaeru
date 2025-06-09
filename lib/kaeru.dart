@@ -1,3 +1,4 @@
+export 'composables/define_widget/main.dart';
 export 'composables/exception/no_watcher_found_exception.dart';
 export 'composables/next_tick.dart';
 export 'composables/on_watcher_cleanup.dart';
