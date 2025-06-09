@@ -41,12 +41,15 @@ class DefineWidgetBuilderState extends State<DefineWidgetBuilder>
     for (var notifier in notifiersStore) {
       notifier.dispose();
     }
+    notifiersStore.clear();
+  
     for (var fn in disposesStore) {
       fn();
     }
-
-    super.dispose();
+    disposesStore.clear();
 
     if (getCurrentState() == this) restoreCurrentState(null);
+  
+    super.dispose();
   }
 }
