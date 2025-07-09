@@ -176,7 +176,7 @@ class _TestUsePickState extends State<TestUsePick> with KaeruMixin {
       children: [
         Row(children: [
           Watch(() {
-            final counter = usePick(map, (value) => value['counter']);
+            final counter = usePick(() => map.value['counter']);
             print('renfd');
             return Text('counter = ${counter.value}');
           }),

@@ -368,7 +368,7 @@ final map = Ref({'foo': 0, 'bar': 0});
 
 Watch(() {
   // Only recomputes when 'foo' changes
-  final foo = usePick(map, (value) => value['foo']);
+  final foo = usePick(() => map.value['foo']);
   print(foo.value); // 0
 });
 

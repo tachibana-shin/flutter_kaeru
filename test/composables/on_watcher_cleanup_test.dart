@@ -5,7 +5,8 @@ void main() {
   group('onWatcherCleanup', () {
     test('should only use in watcher', () {
       try {
-        usePick(Ref(0), (value) => value);
+        final counter = Ref(0);
+        usePick(() => counter.value);
         fail('should throw error');
       } catch (e) {
         expect(e, isA<NoWatcherFoundException>());

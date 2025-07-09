@@ -6,7 +6,9 @@ void main() {
   group('usePick', () {
     test('should only use in watcher', () {
       try {
-        usePick(Ref(0), (value) => value);
+        final counter = Ref(0);
+
+        usePick(() => counter.value);
         fail('should throw error');
       } catch (e) {
         expect(e, isA<NoWatcherFoundException>());
@@ -18,7 +20,7 @@ void main() {
 
       int fooChanges = 0;
       watchEffect$(() {
-        final foo = usePick(map, (value) => value['foo']);
+        final foo = usePick(() => map.value['foo']);
 
         foo.value;
         fooChanges++;
@@ -49,7 +51,7 @@ void main() {
 
       int countComputes = 0;
       watchEffect$(() {
-        final foo = usePick(map, (value) => value['foo']);
+        final foo = usePick(() => map.value['foo']);
 
         foo.value;
 
@@ -79,8 +81,8 @@ void main() {
 
       int countComputes = 0;
       watchEffect$(() {
-        final foo = usePick(map, (value) => value['foo']);
-        final bar = usePick(map, (value) => value['bar']);
+        final foo = usePick(() => map.value['foo']);
+        final bar = usePick(() => map.value['bar']);
 
         foo.value;
         bar.value;
@@ -110,12 +112,12 @@ void main() {
 
       int countComputes = 0;
       watchEffect$(() {
-        final foo = usePick(map, (value) => value['foo']);
+        final foo = usePick(() => map.value['foo']);
 
         foo.value;
 
         if (foo.value! <= 2) {
-          final bar = usePick(map, (value) => value['bar']);
+          final bar = usePick(() => map.value['bar']);
           bar.value;
         }
 
@@ -168,7 +170,7 @@ void main() {
       int countCall = 0;
       int depends = 0;
       watchEffect$(() {
-        usePick(map, (value) => value['foo']);
+        usePick(() => map.value['foo']);
 
         // ignore: invalid_use_of_protected_member
         depends = getCurrentWatcher()!.watchers.length;
@@ -199,7 +201,7 @@ void main() {
       int countCall = 0;
       int depends = 0;
       watchEffect$(() {
-        usePick(map, (value) => value['foo']).value;
+        usePick(() => map.value['foo']).value;
 
         // ignore: invalid_use_of_protected_member
         depends = getCurrentWatcher()!.watchers.length;

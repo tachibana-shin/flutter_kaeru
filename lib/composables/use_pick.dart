@@ -1,5 +1,3 @@
-import 'package:kaeru/shared/reactive_notifier.dart';
-
 import '../foundation/computed.dart';
 import 'shared/get_current_instance.dart';
 
@@ -21,12 +19,12 @@ class Picker<T> {
   }
 }
 
-Picker<U> usePick<T, U>(ReactiveNotifier<T> ctx, U Function(T value) selector) {
+Picker<T> usePick<T>(T Function() selector) {
   final currentWatcher = getCurrentInstance();
 
   var pickWatcher = currentWatcher.getCC();
   pickWatcher ??= currentWatcher
-      .setCC(Picker<U>(() => Computed<U>(() => selector(ctx.value))));
+      .setCC(Picker<T>(() => Computed<T>(selector)));
 
-  return pickWatcher as Picker<U>;
+  return pickWatcher as Picker<T>;
 }
