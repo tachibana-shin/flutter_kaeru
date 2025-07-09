@@ -1,3 +1,7 @@
+## 0.1.17
+* feat: add `mounted` for composible ref api
+* change syntax `useRef(ref, fn)` -> `useRef(fn)`
+
 ## 0.1.16
 * feat: add `defineWidget`
 
