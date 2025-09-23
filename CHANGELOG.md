@@ -1,3 +1,7 @@
+## 0.2.0
+* feat: add `KaeruWidget`
+* break: remove `defineWidget`
+
 ## 0.1.17
 * feat: add `mounted` for composible ref api
 * change syntax `useRef(ref, fn)` -> `useRef(fn)`
