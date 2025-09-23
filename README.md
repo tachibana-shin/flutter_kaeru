@@ -1,3 +1,5 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/tachibana-shin/flutter_kaeru)
+
 # Kaeru for Flutter
 
 **Kaeru** is a comprehensive and efficient reactivity system for Flutter, inspired by Vue 3's `@vue/reactivity`. It provides a fully functional reactive programming model that makes state management in Flutter simple, optimized, and declarative.
