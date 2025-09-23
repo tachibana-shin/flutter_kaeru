@@ -21,9 +21,10 @@ class _MyAppState extends State<MyApp> {
             body: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(children: [
-                  TextButton(
-                      child: Text('refresh'), onPressed: () => setState(() {})),
-                  counterDefine((onMax: () => print('OK'))),
+                  // TextButton(
+                  //     child: Text('refresh'), onPressed: () => setState(() {})),
+                  // counterDefine((onMax: () => print('OK'))),
+                  ParentWidget(),
                 ]))));
   }
 }
@@ -202,51 +203,120 @@ class _TestUsePickState extends State<TestUsePick> with KaeruMixin {
 
 //============================= test define_widget //
 
-typedef FooProps = ({Ref<int> counter});
-// ignore: non_constant_identifier_names
-final Foo = defineWidget((FooProps props) {
-  final foo = $ref(0);
+// typedef FooProps = ({Ref<int> counter});
+// // ignore: non_constant_identifier_names
+// final Foo = defineWidget((FooProps props) {
+//   final foo = $ref(0);
 
-  void onPressed() {
-    foo.value++;
+//   void onPressed() {
+//     foo.value++;
+//   }
+
+//   void resetParent() {
+//     props.counter.value = 0;
+//   }
+
+//   return (ctx) => Row(
+//         children: [
+//           TextButton(
+//               onPressed: onPressed,
+//               child:
+//                   Text('counter + foo = ${props.counter.value + foo.value}')),
+//           TextButton(
+//               onPressed: resetParent, child: Text('Reset counter parent'))
+//         ],
+//       );
+// });
+
+// typedef CounterProps = ({VoidCallback onMax});
+// final counterDefine = defineWidget((CounterProps props) {
+//   final counter = $ref(0);
+//   final (isHover: isHover, hoverWrap: hoverWrap) = useHoverWidget();
+
+//   print('Render once');
+
+//   void onPressed() {
+//     counter.value++;
+
+//     if (counter.value > 10) props.onMax();
+//   }
+
+//   return (ctx) => Row(
+//         children: [
+//           TextButton(
+//               onPressed: onPressed, child: Text('counter = $counter.value')),
+//           Text('Foo is hoving: ${isHover.value}',
+//               style: TextStyle(color: Colors.red)),
+//           hoverWrap((_) => Foo((counter: counter)))
+//         ],
+//       );
+// });
+
+// ============== test KaeruWidget ==========
+
+class CounterWidget extends KaeruWidget<CounterWidget> {
+  final int depend;
+  const CounterWidget({super.key, required this.depend});
+
+  @override
+  Setup setup() {
+    final count = ref(0);
+    final depend = prop((w) => w.depend);
+
+    watchEffect(() {
+      count.value; // track
+      debugPrint('effect in count changed ${count.value}');
+    });
+    watchEffect(() {
+      depend.value; // track
+      debugPrint('effect in depend changed ${depend.value}');
+    });
+
+    onMounted(() {
+      debugPrint('mounted');
+    });
+
+    return () {
+      debugPrint('main counter re-build');
+
+      return Row(children: [
+        Watch(() {
+          debugPrint('depend in counter changed');
+          return Text('depend = ${depend.value}');
+        }),
+        Watch(() {
+          debugPrint('counter in counter changed');
+          return Text('counter = ${count.value}');
+        }),
+        IconButton(onPressed: () => count.value++, icon: const Icon(Icons.add)),
+        IconButton(
+            onPressed: () => count.value--, icon: const Icon(Icons.remove)),
+      ]);
+    };
   }
+}
 
-  void resetParent() {
-    props.counter.value = 0;
+class ParentWidget extends StatefulWidget {
+  const ParentWidget({super.key});
+
+  @override
+  State<ParentWidget> createState() => _ParentWidgetState();
+}
+
+class _ParentWidgetState extends State<ParentWidget> {
+  int depend = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(children: [
+      CounterWidget(depend: depend),
+      ElevatedButton(
+          onPressed: () {
+            setState(() {
+              depend++;
+            });
+          },
+          child: Text('depend++ ${depend}'))
+    ]);
   }
-
-  return (ctx) => Row(
-        children: [
-          TextButton(
-              onPressed: onPressed,
-              child:
-                  Text('counter + foo = ${props.counter.value + foo.value}')),
-          TextButton(
-              onPressed: resetParent, child: Text('Reset counter parent'))
-        ],
-      );
-});
-
-typedef CounterProps = ({VoidCallback onMax});
-final counterDefine = defineWidget((CounterProps props) {
-  final counter = $ref(0);
-  final (isHover: isHover, hoverWrap: hoverWrap) = useHoverWidget();
-
-  print('Render once');
-
-  void onPressed() {
-    counter.value++;
-
-    if (counter.value > 10) props.onMax();
-  }
-
-  return (ctx) => Row(
-        children: [
-          TextButton(
-              onPressed: onPressed, child: Text('counter = $counter.value')),
-          Text('Foo is hoving: ${isHover.value}',
-              style: TextStyle(color: Colors.red)),
-          hoverWrap((_) => Foo((counter: counter)))
-        ],
-      );
-});
+}

@@ -1,0 +1,1 @@
+These APIs have been deprecated. Please use KaeruWidget as a replacement.

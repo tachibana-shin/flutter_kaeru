@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kaeru/kaeru.dart';
+import '../main.dart';
 
 typedef FunctionRender = Widget Function(BuildContext context);
 

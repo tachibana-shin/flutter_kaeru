@@ -1,4 +1,5 @@
-export 'composables/define_widget/main.dart';
+// These APIs have been deprecated. Please use KaeruWidget as a replacement.
+// export 'composables/define_widget/main.dart';
 export 'composables/exception/no_watcher_found_exception.dart';
 export 'composables/next_tick.dart';
 export 'composables/on_watcher_cleanup.dart';
@@ -17,5 +18,6 @@ export 'mixins/kaeru_life_mixin.dart';
 export 'mixins/kaeru_listen_mixin.dart';
 export 'mixins/kaeru_mixin.dart';
 
+export 'widget/kaeru_widget/kaeru_widget.dart';
 export 'widget/watch.dart';
 export 'widget/kareu_builder.dart';

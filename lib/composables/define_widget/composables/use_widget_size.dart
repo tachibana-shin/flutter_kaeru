@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:kaeru/kaeru.dart';
+import '../main.dart';
 
 typedef UseWidgetSizeReturn = ({
   GlobalKey key,

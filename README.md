@@ -42,6 +42,63 @@ import 'package:kaeru/kaeru.dart';
 
 ---
 
+## New API `KaeruWidget`
+Easy create new widget:
+All system and hook ready!
+```dart
+class CounterWidget extends KaeruWidget<CounterWidget> {
+  final int depend;
+  const CounterWidget({super.key, required this.depend});
+
+  @override
+  Setup setup() {
+    final count = ref(0);
+    final depend = prop((w) => w.depend);
+
+    watchEffect(() {
+      count.value; // track
+      debugPrint('effect in count changed ${count.value}');
+    });
+    watchEffect(() {
+      depend.value; // track
+      debugPrint('effect in depend changed ${depend.value}');
+    });
+
+    onMounted(() {
+      debugPrint('mounted');
+    });
+
+    return () {
+      debugPrint('main counter re-build');
+
+      return Row(children: [
+        Watch(() {
+          debugPrint('depend in counter changed');
+          return Text('depend = ${depend.value}');
+        }),
+        Watch(() {
+          debugPrint('counter in counter changed');
+          return Text('counter = ${count.value}');
+        }),
+        IconButton(onPressed: () => count.value++, icon: const Icon(Icons.add)),
+        IconButton(
+            onPressed: () => count.value--, icon: const Icon(Icons.remove)),
+      ]);
+    };
+  }
+}
+```
+You can even create compositions with this
+```dart
+Computed<double> useScaleWidth(Ref<double> ref) {
+  final ctx = useKaeruContext();
+  assert(ctx != null); // Ensure if use composition without KaeruWidget
+
+  final screenWidth = ctx.size.width;
+  return computed(() => ref.value / screenWidth);
+}
+```
+
 ## 🏗 API Documentation
 
 ### **Widget: `defineWidget`**

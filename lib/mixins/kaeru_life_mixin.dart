@@ -26,6 +26,9 @@ mixin KaeruLifeMixin<T extends StatefulWidget> on State<T> {
   /// Callbacks triggered before the widget is disposed (`dispose`).
   final _fnBeforeUnmount = <VoidCallback>{};
 
+  /// Callbacks triggered when the widget is activated (`activate`).
+  final _fnActivated = <VoidCallback>{};
+
   /// Callbacks triggered when the widget is temporarily removed (`deactivate`).
   final _fnDeactivated = <VoidCallback>{};
 
@@ -49,6 +52,11 @@ mixin KaeruLifeMixin<T extends StatefulWidget> on State<T> {
     _fnBeforeUnmount.add(callback);
   }
 
+  /// Registers a callback to be called when the widget is activated (`activate`).
+  void onActivated(VoidCallback callback) {
+    _fnActivated.add(callback);
+  }
+
   /// Registers a callback to be called when the widget is temporarily removed (`deactivate`).
   void onDeactivated(VoidCallback callback) {
     _fnDeactivated.add(callback);
@@ -57,9 +65,11 @@ mixin KaeruLifeMixin<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     super.initState();
-    for (var fn in _fnMounted) {
-      fn();
-    }
+    Future.microtask(() {
+      for (var fn in _fnMounted) {
+        fn();
+      }
+    });
   }
 
   @override
@@ -76,6 +86,14 @@ mixin KaeruLifeMixin<T extends StatefulWidget> on State<T> {
     for (var fn in _fnUpdated) {
       fn();
     }
+  }
+
+  @override
+  void activate() {
+    for (var fn in _fnActivated) {
+      fn();
+    }
+    super.activate();
   }
 
   @override
