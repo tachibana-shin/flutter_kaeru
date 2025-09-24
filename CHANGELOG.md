@@ -1,10 +1,17 @@
+## 0.2.3
+* Add new API for KaeruWidget lifecycle hooks and composables
+* 
+* - Introduced new lifecycle hooks in `KaeruLifeMixin`
+* - Added composables for `useKeepAliveClient` and `useRestoration`...
+* - Updated existing hooks to support additional parameters and functionality
+* - Removed deprecated advanced widget implementations
+
 ## 0.2.2
 * Add advanced widget classes for KaeruWidget library
 * Compsables core flutter
 
 ## 0.2.1
-* Add useContext and useWidget functions for improved context 
-management within the Kaeru Widget module.
+* Add useContext and useWidget functions for improved context  management within the Kaeru Widget module.
 
 ## 0.2.0
 * feat: add `KaeruWidget`
