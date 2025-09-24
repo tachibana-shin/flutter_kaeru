@@ -100,6 +100,9 @@ Computed<double> useScaleWidth(Ref<double> ref) {
   return computed(() => ref.value / screenWidth);
 }
 ```
+- All hooks life and reactivity ready
+- `useContext() -> BuildContext`
+- `useWidget<T> -> T is Widget`
 
 ## 🏗 API Documentation
 
