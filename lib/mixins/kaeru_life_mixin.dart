@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 /// `KaeruLifeMixin` provides Vue-like lifecycle hooks for StatefulWidgets.
@@ -21,7 +22,7 @@ mixin KaeruLifeMixin<T extends StatefulWidget> on State<T> {
   final _fnDependenciesChanged = <VoidCallback>{};
 
   /// Callbacks triggered when the widget is updated (`didUpdateWidget`).
-  final _fnUpdated = <VoidCallback>{};
+  final _fnUpdated = <void Function(T oldWidget)>{};
 
   /// Callbacks triggered before the widget is disposed (`dispose`).
   final _fnBeforeUnmount = <VoidCallback>{};
@@ -31,6 +32,10 @@ mixin KaeruLifeMixin<T extends StatefulWidget> on State<T> {
 
   /// Callbacks triggered when the widget is temporarily removed (`deactivate`).
   final _fnDeactivated = <VoidCallback>{};
+
+  final _fnDebug = <void Function(DiagnosticPropertiesBuilder properties)>{};
+
+  final _fnBeforeBuild = <void Function(BuildContext context)>{};
 
   /// Registers a callback to be called when the widget is first mounted (`initState`).
   void onMounted(VoidCallback callback) {
@@ -43,7 +48,7 @@ mixin KaeruLifeMixin<T extends StatefulWidget> on State<T> {
   }
 
   /// Registers a callback to be called when the widget updates (`didUpdateWidget`).
-  void onUpdated(VoidCallback callback) {
+  void onUpdated(void Function(T oldWidget) callback) {
     _fnUpdated.add(callback);
   }
 
@@ -60,6 +65,17 @@ mixin KaeruLifeMixin<T extends StatefulWidget> on State<T> {
   /// Registers a callback to be called when the widget is temporarily removed (`deactivate`).
   void onDeactivated(VoidCallback callback) {
     _fnDeactivated.add(callback);
+  }
+
+  /// Registers a callback to be called when the widget is debugged (`debugFillProperties`).
+  void onDebugFillProperties(
+      void Function(DiagnosticPropertiesBuilder properties) callback) {
+    _fnDebug.add(callback);
+  }
+
+  /// Registers a callback to be called before the widget is built (`build`).
+  void onBeforeBuild(void Function(BuildContext context) callback) {
+    _fnBeforeBuild.add(callback);
   }
 
   @override
@@ -84,7 +100,7 @@ mixin KaeruLifeMixin<T extends StatefulWidget> on State<T> {
   void didUpdateWidget(covariant T oldWidget) {
     super.didUpdateWidget(oldWidget);
     for (var fn in _fnUpdated) {
-      fn();
+      fn(oldWidget);
     }
   }
 
@@ -104,11 +120,38 @@ mixin KaeruLifeMixin<T extends StatefulWidget> on State<T> {
     super.deactivate();
   }
 
+  @mustCallSuper
+  @override
+  Widget build(BuildContext context) {
+    // super.build(context);
+    for (var fn in _fnBeforeBuild) {
+      fn(context);
+    }
+    return const NullWidget();
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    for (var fn in _fnDebug) {
+      fn(properties);
+    }
+  }
+
   @override
   void dispose() {
     for (var fn in _fnBeforeUnmount) {
       fn();
     }
     super.dispose();
+  }
+}
+
+class NullWidget extends StatelessWidget {
+  const NullWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    throw FlutterError('NullWidget called, this action is not allowed');
   }
 }

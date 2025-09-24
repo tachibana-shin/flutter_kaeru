@@ -34,7 +34,10 @@ class DefineWidgetBuilderState extends State<DefineWidgetBuilder>
   }
 
   @override
-  Widget build(context) => widget.build(context, _render);
+  Widget build(context) {
+    super.build(context);
+    return widget.build(context, _render);
+  }
 
   @override
   void dispose() {
@@ -42,14 +45,14 @@ class DefineWidgetBuilderState extends State<DefineWidgetBuilder>
       notifier.dispose();
     }
     notifiersStore.clear();
-  
+
     for (var fn in disposesStore) {
       fn();
     }
     disposesStore.clear();
 
     if (getCurrentState() == this) restoreCurrentState(null);
-  
+
     super.dispose();
   }
 }

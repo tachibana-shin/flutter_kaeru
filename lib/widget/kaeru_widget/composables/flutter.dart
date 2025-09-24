@@ -1,10 +1,34 @@
 import 'dart:async';
+
+/// Provides hooks for animation and tab controllers in Flutter.
+///
+/// This file includes functions to create `AnimationController` and `TabController`
+/// with optional `vsync` parameter. If `vsync` is not provided, a single ticker state
+/// will be created automatically.
+///
+/// Example usage of `useAnimationController`:
+/// ```dart
+/// final controller = useAnimationController(
+///   duration: Duration(seconds: 1),
+/// );
+/// ```
+///
+/// Example usage of `useTabController`:
+/// ```dart
+/// final tabController = useTabController(
+///   length: 3,
+/// );
+/// ```
 import 'package:flutter/material.dart';
-import 'package:kaeru/kaeru.dart';
+
+import '../life.dart';
+import 'use_single_ticker_state.dart';
 
 /// --- Animation & Tab ---
 AnimationController useAnimationController({
-  required TickerProvider vsync,
+  /// An optional [vsync] parameter to synchronize the animation.
+  /// If not provided, a ticker will be created automatically.
+  TickerProvider? vsync,
   Duration? duration,
   String? debugLabel,
   double? lowerBound,
@@ -12,6 +36,7 @@ AnimationController useAnimationController({
   double? value,
   AnimationBehavior animationBehavior = AnimationBehavior.normal,
 }) {
+  vsync ??= useSingleTickerState();
   final c = AnimationController(
     vsync: vsync,
     duration: duration,
@@ -26,11 +51,14 @@ AnimationController useAnimationController({
 }
 
 TabController useTabController({
+  /// An optional [vsync] parameter to synchronize the tab animations.
+  /// If not provided, a ticker will be created automatically.
   required int length,
-  required TickerProvider vsync,
+  TickerProvider? vsync,
   int initialIndex = 0,
   Duration? animationDuration,
 }) {
+  vsync ??= useSingleTickerState();
   final c = TabController(
     length: length,
     vsync: vsync,
@@ -81,13 +109,13 @@ TextEditingController useTextEditingController([String? text]) {
 FocusNode useFocusNode({
   String? debugLabel,
   bool canRequestFocus = true,
-  FocusOnKeyCallback? onKey,
+  FocusOnKeyEventCallback? onKeyEvent,
   bool skipTraversal = false,
 }) {
   final n = FocusNode(
     debugLabel: debugLabel,
     canRequestFocus: canRequestFocus,
-    onKey: onKey,
+    onKeyEvent: onKeyEvent,
     skipTraversal: skipTraversal,
   );
   onBeforeUnmount(n.dispose);
@@ -147,7 +175,8 @@ StreamSubscription<T> useStreamSubscription<T>(
 }
 
 /// --- Timer ---
-Timer useTimer(Duration duration, void Function() callback, {bool periodic = false}) {
+Timer useTimer(Duration duration, void Function() callback,
+    {bool periodic = false}) {
   final timer = periodic
       ? Timer.periodic(duration, (_) => callback())
       : Timer(duration, callback);

@@ -3,11 +3,13 @@ import 'package:kaeru/kaeru.dart';
 
 export 'composables/flutter.dart';
 export 'composables/use_context.dart';
+export 'composables/use_keep_alive_client.dart';
+export 'composables/use_restoration.dart';
+export 'composables/use_single_ticker_state.dart';
 export 'composables/use_widget.dart';
 
 export 'life.dart';
 export 'reactive.dart';
-export 'widget_advanced.dart';
 
 typedef Setup = Widget Function();
 
@@ -41,7 +43,7 @@ KaeruLifeMixin? useLifeContext() {
   return _lifeContext;
 }
 
-class KaeruWidget<W extends Widget> extends StatefulWidget {
+class KaeruWidget<W extends StatefulWidget> extends StatefulWidget {
   @protected
   Setup setup() {
     throw UnimplementedError('setup must be implemented');
@@ -54,7 +56,7 @@ class KaeruWidget<W extends Widget> extends StatefulWidget {
 
     final ctx = _kaeruContext;
     final computer = computed(() => compute(ctx!.widget as W));
-    onUpdated(computer.onChange);
+    onUpdated((_) => computer.onChange());
 
     return computer;
   }
@@ -62,10 +64,10 @@ class KaeruWidget<W extends Widget> extends StatefulWidget {
   const KaeruWidget({super.key});
 
   @override
-  createState() => KaeruWidgetState();
+  createState() => KaeruWidgetState<W>();
 }
 
-class KaeruWidgetState extends State<KaeruWidget>
+class KaeruWidgetState<T extends StatefulWidget> extends State<KaeruWidget<T>>
     with KaeruMixin, KaeruLifeMixin {
   late final Setup _setup;
 
@@ -82,6 +84,7 @@ class KaeruWidgetState extends State<KaeruWidget>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Watch(_setup);
   }
 }

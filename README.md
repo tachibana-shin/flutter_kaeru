@@ -16,6 +16,7 @@
 > If in KaeruMixin you have use `watch$` with `watch` and `watchEffect$` with `watchEffect`
 
 ## List composables
+
 - `useContext`
 - `useHoverWidget`
 - `useRef`
@@ -45,8 +46,10 @@ import 'package:kaeru/kaeru.dart';
 ---
 
 ## New API `KaeruWidget`
+
 Easy create new widget:
 All system and hook ready!
+
 ```dart
 class CounterWidget extends KaeruWidget<CounterWidget> {
   final int depend;
@@ -90,7 +93,9 @@ class CounterWidget extends KaeruWidget<CounterWidget> {
   }
 }
 ```
+
 You can even create compositions with this
+
 ```dart
 Computed<double> useScaleWidth(Ref<double> ref) {
   final ctx = useKaeruContext();
@@ -100,6 +105,7 @@ Computed<double> useScaleWidth(Ref<double> ref) {
   return computed(() => ref.value / screenWidth);
 }
 ```
+
 - All hooks life and reactivity ready
 - `useContext() -> BuildContext`
 - `useWidget<T> -> T is Widget`
@@ -108,46 +114,32 @@ Computed<double> useScaleWidth(Ref<double> ref) {
 
 ## 1. Lifecycle / Core Hooks
 
-| Hook / Composable | Description | Notes |
-|------------------|------------|-------|
-| `onBeforeUnmount` | Register a callback to run before widget unmounts | Auto dispose / cleanup |
-| `onUpdated` | Register a callback when reactive value changes | Works with `Computed` or `Ref` |
-| `useLifeContext` | Access current Kaeru lifecycle context | Internal reactive context |
-| `useKaeruContext` | Access current Kaeru reactive context | Returns current `KaeruMixin` |
-| `onMounted` | Register a callback after widget is mounted | Runs once |
-| `onUnmounted` | Register a callback after widget is disposed | Runs once |
+| Hook / Composable | Description                                       | Notes                          |
+| ----------------- | ------------------------------------------------- | ------------------------------ |
+| `onBeforeUnmount` | Register a callback to run before widget unmounts | Auto dispose / cleanup         |
+| `onUpdated`       | Register a callback when reactive value changes   | Works with `Computed` or `Ref` |
+| `useLifeContext`  | Access current Kaeru lifecycle context            | Internal reactive context      |
+| `useKaeruContext` | Access current Kaeru reactive context             | Returns current `KaeruMixin`   |
+| `onMounted`       | Register a callback after widget is mounted       | Runs once                      |
+| `onUnmounted`     | Register a callback after widget is disposed      | Runs once                      |
 
 ---
 
 ## 2. Reactive / Controller Hooks (New)
 
-| Hook / Composable | Description | Notes |
-|------------------|------------|-------|
-| `useTabController` | Creates a `TabController` with automatic dispose | Requires `TickerProvider` |
-| `useAnimationController` | Creates an `AnimationController` with automatic dispose | Needs `vsync` |
-| `useScrollController` | Creates a `ScrollController` with automatic dispose | For `ListView` / `ScrollView` |
-| `useTextEditingController` | Creates a `TextEditingController` with automatic dispose | Can bind reactively |
-| `usePageController` | Creates a `PageController` with automatic dispose | For `PageView` |
-| `useValueNotifier<T>` | Creates a `ValueNotifier<T>` with automatic dispose | Reactive Kaeru binding |
-| `useFocusNode` | Creates a `FocusNode` with automatic dispose | For focus management |
-| `useTicker` | Creates a low-level `Ticker` with automatic dispose | Custom animation without `AnimationController` |
-
----
-
-## 3. Widgets with Core Flutter Mixins (New)
-
-| Widget | Built-in Mixin | Notes |
-|--------|----------------|------|
-| `KaeruTickerWidget<T>` | `TickerProviderStateMixin` | Supports `AnimationController`, `TabController`, `PageController` |
-| `KaeruKeepAliveWidget<T>` | `AutomaticKeepAliveClientMixin` | Keeps state alive in `ListView` / `PageView` |
-| `KaeruRestorationWidget<T>` | `RestorationMixin` | Supports state restoration |
-| `KaeruLifecycleWidget<T>` | `WidgetsBindingObserver` | Listens to app lifecycle events |
-| `KaeruTickerKeepAliveWidget<T>` | `TickerProviderStateMixin + AutomaticKeepAliveClientMixin` | Combo for animation + keep alive |
-| `DynamicKaeruWidget` | None (delegate-based) | Accepts list of `KaeruDelegate`, auto init + dispose |
-| `AnimationDelegate` | N/A | Creates `AnimationController` + auto dispose for `DynamicKaeruWidget` |
-| `ScrollDelegate` | N/A | Creates `ScrollController` + auto dispose for `DynamicKaeruWidget` |
-| `TabDelegate` (planned) | N/A | Creates `TabController` + vsync + auto dispose for `DynamicKaeruWidget` |
-| `ValueNotifierDelegate` | N/A | Creates `ValueNotifier<T>` + auto dispose for `DynamicKaeruWidget` |
+| Hook / Composable          | Description                                                       | Notes                                                                                                   |
+| -------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `useTabController`         | Creates a `TabController` with automatic dispose                  | Requires `TickerProvider`                                                                               |
+| `useAnimationController`   | Creates an `AnimationController` with automatic dispose           | Needs `vsync`                                                                                           |
+| `useScrollController`      | Creates a `ScrollController` with automatic dispose               | For `ListView` / `ScrollView`                                                                           |
+| `useTextEditingController` | Creates a `TextEditingController` with automatic dispose          | Can bind reactively                                                                                     |
+| `usePageController`        | Creates a `PageController` with automatic dispose                 | For `PageView`                                                                                          |
+| `useValueNotifier<T>`      | Creates a `ValueNotifier<T>` with automatic dispose               | Reactive Kaeru binding                                                                                  |
+| `useFocusNode`             | Creates a `FocusNode` with automatic dispose                      | For focus management                                                                                    |
+| `useTicker`                | Creates a low-level `Ticker` with automatic dispose               | Custom animation without `AnimationController`                                                          |
+| `useKeepAliveClient`       | Creates a `KeepAliveClient` with automatic dispose                | Simply calling this hook will make your widget behave as if it were a widget with KeepAliveClientMixin. |
+| `useRestoration`           | Creates a `RestorationController` with automatic dispose          | For restoration management                                                                              |
+| `useSingleTickerState`     | Creates a `SingleTickerProviderStateMixin` with automatic dispose | For custom animation without `AnimationController`                                                      |
 
 ---
 
@@ -329,10 +321,12 @@ class _MyWidgetState extends State<MyWidget> with KaeruMixin {
 #### `Watch` (Automatic UI Rebuilds)
 
 A widget that automatically updates when its dependencies change.
->>> [!TIP]
->>> If in KaeruMixin you have use `watch$` with `watch` and `watchEffect$` with `watchEffect`
+
+> > > [!TIP]
+> > > If in KaeruMixin you have use `watch$` with `watch` and `watchEffect$` with `watchEffect`
 
 By default `Watch` doesn"t care about external changes e.g.
+
 ```dart
 class ExampleState extends State<Example> {
   int counter = 1;
@@ -354,7 +348,9 @@ class ExampleState extends State<Example> {
   }
 }
 ```
+
 so if static dependency is used in `Watch` you need to set it in the `dependencies` option
+
 ```dart
 class ExampleState extends State<Example> {
   int counter = 1;
@@ -388,6 +384,7 @@ Watch(
 ### `KaeruBuilder` (Builder for Kaeru)
 
 ### Example:
+
 ```dart
 KaeruBuilder((context) {
   final counter = context.ref(0);
@@ -425,10 +422,10 @@ Creates a computed value that tracks only the selected part of a reactive object
 
 #### Parameters:
 
-| Parameter   | Type                         | Description                                      |
-| ----------- | ---------------------------- | ------------------------------------------------ |
-| `ctx`       | `ReactiveNotifier<T>`        | The reactive object to select from.              |
-| `selector`  | `U Function(T value)`        | Function to select a value from the object.      |
+| Parameter  | Type                  | Description                                 |
+| ---------- | --------------------- | ------------------------------------------- |
+| `ctx`      | `ReactiveNotifier<T>` | The reactive object to select from.         |
+| `selector` | `U Function(T value)` | Function to select a value from the object. |
 
 #### Example:
 
@@ -450,9 +447,9 @@ Registers a callback to be called when the watcher or computed is refreshed or d
 
 #### Parameters:
 
-| Parameter   | Type           | Description                                 |
-| ----------- | -------------- | ------------------------------------------- |
-| `callback`  | `VoidCallback` | Function to be called on cleanup/dispose.   |
+| Parameter  | Type           | Description                               |
+| ---------- | -------------- | ----------------------------------------- |
+| `callback` | `VoidCallback` | Function to be called on cleanup/dispose. |
 
 #### Example:
 
@@ -494,9 +491,9 @@ Runs a callback after the current microtask queue is flushed (similar to `Promis
 
 #### Parameters:
 
-| Parameter   | Type            | Description                                 |
-| ----------- | --------------- | ------------------------------------------- |
-| `callback`  | `VoidCallback?` | (Optional) Function to run after the tick.  |
+| Parameter  | Type            | Description                                |
+| ---------- | --------------- | ------------------------------------------ |
+| `callback` | `VoidCallback?` | (Optional) Function to run after the tick. |
 
 #### Example:
 
@@ -685,7 +682,9 @@ class _MyComponentState extends State<MyComponent> with KaeruListenMixin<MyCompo
 This package provides an intuitive and efficient reactivity system for Flutter, making state management much easier and more performant. 🚀
 
 ## Example
+
 `example/lib/main.dart`
+
 ```dart
 import 'package:flutter/material.dart';
 import 'package:kaeru/kaeru.dart';

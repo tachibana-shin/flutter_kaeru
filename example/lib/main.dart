@@ -81,7 +81,7 @@ class _CounterState extends State<Counter> with KaeruMixin, KaeruLifeMixin {
 
     onMounted(() => print('✅ Widget Mounted!'));
     onDependenciesChanged(() => print('🔄 Dependencies Changed!'));
-    onUpdated(() => print('♻️ Widget Updated!'));
+    onUpdated((_) => print('♻️ Widget Updated!'));
     onDeactivated(() => print('⚠️ Widget Deactivated!'));
     onBeforeUnmount(() => print('🗑 Widget Disposed!'));
 
@@ -90,6 +90,7 @@ class _CounterState extends State<Counter> with KaeruMixin, KaeruLifeMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     print('Root render');
 
     return Column(
