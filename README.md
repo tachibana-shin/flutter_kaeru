@@ -104,60 +104,67 @@ Computed<double> useScaleWidth(Ref<double> ref) {
 - `useContext() -> BuildContext`
 - `useWidget<T> -> T is Widget`
 
+# Kaeru Hooks & Widgets (Full List)
+
+## 1. Lifecycle / Core Hooks
+
+| Hook / Composable | Description | Notes |
+|------------------|------------|-------|
+| `onBeforeUnmount` | Register a callback to run before widget unmounts | Auto dispose / cleanup |
+| `onUpdated` | Register a callback when reactive value changes | Works with `Computed` or `Ref` |
+| `useLifeContext` | Access current Kaeru lifecycle context | Internal reactive context |
+| `useKaeruContext` | Access current Kaeru reactive context | Returns current `KaeruMixin` |
+| `onMounted` | Register a callback after widget is mounted | Runs once |
+| `onUnmounted` | Register a callback after widget is disposed | Runs once |
+
+---
+
+## 2. Reactive / Controller Hooks (New)
+
+| Hook / Composable | Description | Notes |
+|------------------|------------|-------|
+| `useTabController` | Creates a `TabController` with automatic dispose | Requires `TickerProvider` |
+| `useAnimationController` | Creates an `AnimationController` with automatic dispose | Needs `vsync` |
+| `useScrollController` | Creates a `ScrollController` with automatic dispose | For `ListView` / `ScrollView` |
+| `useTextEditingController` | Creates a `TextEditingController` with automatic dispose | Can bind reactively |
+| `usePageController` | Creates a `PageController` with automatic dispose | For `PageView` |
+| `useValueNotifier<T>` | Creates a `ValueNotifier<T>` with automatic dispose | Reactive Kaeru binding |
+| `useFocusNode` | Creates a `FocusNode` with automatic dispose | For focus management |
+| `useTicker` | Creates a low-level `Ticker` with automatic dispose | Custom animation without `AnimationController` |
+
+---
+
+## 3. Widgets with Core Flutter Mixins (New)
+
+| Widget | Built-in Mixin | Notes |
+|--------|----------------|------|
+| `KaeruTickerWidget<T>` | `TickerProviderStateMixin` | Supports `AnimationController`, `TabController`, `PageController` |
+| `KaeruKeepAliveWidget<T>` | `AutomaticKeepAliveClientMixin` | Keeps state alive in `ListView` / `PageView` |
+| `KaeruRestorationWidget<T>` | `RestorationMixin` | Supports state restoration |
+| `KaeruLifecycleWidget<T>` | `WidgetsBindingObserver` | Listens to app lifecycle events |
+| `KaeruTickerKeepAliveWidget<T>` | `TickerProviderStateMixin + AutomaticKeepAliveClientMixin` | Combo for animation + keep alive |
+| `DynamicKaeruWidget` | None (delegate-based) | Accepts list of `KaeruDelegate`, auto init + dispose |
+| `AnimationDelegate` | N/A | Creates `AnimationController` + auto dispose for `DynamicKaeruWidget` |
+| `ScrollDelegate` | N/A | Creates `ScrollController` + auto dispose for `DynamicKaeruWidget` |
+| `TabDelegate` (planned) | N/A | Creates `TabController` + vsync + auto dispose for `DynamicKaeruWidget` |
+| `ValueNotifierDelegate` | N/A | Creates `ValueNotifier<T>` + auto dispose for `DynamicKaeruWidget` |
+
+---
+
+## 4. Notes
+
+- **Lifecycle hooks**:
+  - `onBeforeUnmount`, `onUpdated`, etc., are core reactive hooks for cleanup & reactive side effects.
+- **Controller hooks**:
+  - Auto dispose, ready for reactive binding with Kaeru.
+- **Widgets with built-in Mixins**:
+  - Enable Flutter core behavior without creating State manually.
+- **Dynamic delegate pattern**:
+  - Combine multiple delegates (Animation, Scroll, Tab, ValueNotifier) with auto setup & dispose.
+
+---
+
 ## 🏗 API Documentation
-
-### **Widget: `defineWidget`**
-View example. All `life` and `reactivity` ready with name `$ + <name>` (e.g: `$ref`, `$computed`, `$watch`, `$onBeforeUnmount`...)
-
-#### Example
-```dart
-typedef FooProps = ({Ref<int> counter});
-// ignore: non_constant_identifier_names
-final Foo = defineWidget((FooProps props) {
-  final foo = $ref(0);
-
-  void onPressed() {
-    foo.value++;
-  }
-
-  void resetParent() {
-    props.counter.value = 0;
-  }
-
-  return (ctx) => Row(
-        children: [
-          TextButton(
-              onPressed: onPressed,
-              child:
-                  Text('counter + foo = ${props.counter.value + foo.value}')),
-          TextButton(
-              onPressed: resetParent, child: Text('Reset counter parent'))
-        ],
-      );
-});
-
-typedef CounterProps = ({VoidCallback onMax});
-// ignore: non_constant_identifier_names
-final Counter = defineWidget((CounterProps props) {
-  final counter = $ref(0);
-
-  print('Render once');
-
-  void onPressed() {
-    counter.value++;
-
-    if (counter.value > 10) props.onMax();
-  }
-
-  return (ctx) => Row(
-        children: [
-          TextButton(
-              onPressed: onPressed, child: Text('counter = $counter.value')),
-          Foo((counter: counter))
-        ],
-      );
-});
-```
 
 ### 1️⃣ **Reactive State: `Ref<T>`**
 

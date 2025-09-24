@@ -1,3 +1,7 @@
+## 0.2.2
+* Add advanced widget classes for KaeruWidget library
+* Compsables core flutter
+
 ## 0.2.1
 * Add useContext and useWidget functions for improved context 
 management within the Kaeru Widget module.
