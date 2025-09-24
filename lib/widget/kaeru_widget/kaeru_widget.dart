@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kaeru/kaeru.dart';
 
+export 'composables/flutter.dart';
 export 'composables/use_context.dart';
 export 'composables/use_widget.dart';
 
