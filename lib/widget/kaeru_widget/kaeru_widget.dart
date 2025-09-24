@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kaeru/kaeru.dart';
 
-import 'life.dart';
-import 'reactive.dart';
-
 export 'life.dart';
 export 'reactive.dart';
 
