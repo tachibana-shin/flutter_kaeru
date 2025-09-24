@@ -1,3 +1,7 @@
+## 0.2.1
+* Add useContext and useWidget functions for improved context 
+management within the Kaeru Widget module.
+
 ## 0.2.0
 * feat: add `KaeruWidget`
 * break: remove `defineWidget`
