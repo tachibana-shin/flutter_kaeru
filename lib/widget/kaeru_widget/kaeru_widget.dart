@@ -7,6 +7,7 @@ export 'composables/use_widget.dart';
 
 export 'life.dart';
 export 'reactive.dart';
+export 'widget_advanced.dart';
 
 typedef Setup = Widget Function();
 
@@ -61,10 +62,10 @@ class KaeruWidget<W extends Widget> extends StatefulWidget {
   const KaeruWidget({super.key});
 
   @override
-  createState() => _KaeruWidgetState();
+  createState() => KaeruWidgetState();
 }
 
-class _KaeruWidgetState extends State<KaeruWidget>
+class KaeruWidgetState extends State<KaeruWidget>
     with KaeruMixin, KaeruLifeMixin {
   late final Setup _setup;
 
