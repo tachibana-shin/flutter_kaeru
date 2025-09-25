@@ -1,3 +1,6 @@
+## 0.2.4
+* Update document
+
 ## 0.2.3
 * Add new API for KaeruWidget lifecycle hooks and composables
 * 
