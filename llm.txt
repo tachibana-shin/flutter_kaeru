@@ -1,0 +1,36 @@
+This is the `flutter_kaeru` library. A reactive state management library for Flutter, inspired by Vue Composition API.
+
+Key concepts:
+- `KaeruWidget`: A widget that provides a reactive context for its children. Use this as the base for your widgets.
+- `ref`: Creates a reactive reference to a value.
+- `computed`: Creates a computed value that depends on other reactive values.
+- `watch`: Runs a function whenever a reactive value changes.
+- `watchEffect`: Runs a function immediately and whenever a reactive value it depends on changes.
+
+When writing code using this library, you should:
+1. Create a class that extends `KaeruWidget`.
+2. Implement the `setup` method. This method should return a widget.
+3. Inside the `setup` method, you can use the reactive functions (`ref`, `computed`, `watch`, `watchEffect`) to manage the state of your widget.
+4. Use the `Watch` widget to automatically rebuild parts of your UI when reactive values change.
+
+Example:
+```dart
+class MyWidget extends KaeruWidget {
+  @override
+  Setup setup() {
+    final count = ref(0);
+
+    return () => Column(
+      children: [
+        Text('Count: ${count.value}'),
+        ElevatedButton(
+          onPressed: () => count.value++,
+          child: const Text('Increment'),
+        ),
+      ],
+    );
+  }
+}
+```
+
+Do not use the `defineWidget` API, as it is deprecated.

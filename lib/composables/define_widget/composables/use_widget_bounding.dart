@@ -2,6 +2,10 @@ import 'package:flutter/widgets.dart';
 import 'package:kaeru/kaeru.dart';
 import '../main.dart';
 
+/// Represents the bounding box of a widget.
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 class WidgetBounding {
   final double x;
   final double y;
@@ -21,6 +25,10 @@ class WidgetBounding {
   double get bottom => y + height;
 }
 
+/// Return type for [useWidgetBounding].
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 typedef UseWidgetBoundingReturn = ({
   GlobalKey key,
   Computed<double?> x,
@@ -33,6 +41,10 @@ typedef UseWidgetBoundingReturn = ({
   Computed<double?> height,
 });
 
+/// A hook that provides the bounding box of a widget.
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 UseWidgetBoundingReturn useWidgetBounding() {
   final key = GlobalKey();
   final bounding = $ref<WidgetBounding?>(null);

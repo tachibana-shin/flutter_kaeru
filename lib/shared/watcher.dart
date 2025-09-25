@@ -4,33 +4,43 @@ import '../composables/use_pick.dart';
 import 'reactive_notifier.dart';
 import '../event_bus.dart';
 
+/// A raw watcher that can be used to track dependencies.
 mixin class WatcherRaw<T> {
+  /// A callback that is called when the watcher's dependencies change.
   late final VoidCallback onChange;
+  /// A function that is called to track dependencies.
   late final T Function() dryRun;
 
   bool _firstRun = true;
 
+  /// The set of notifiers that this watcher is listening to.
   @protected
   Set<ReactiveNotifier> watchers = {};
   Listenable? _listenable;
 
+  /// A map of computes that are used by this watcher.
   Map<int, Picker> computes = {};
+  /// The current index of the compute being used.
   int currentIndexCompute = 0;
 
   final Set<VoidCallback> _cleanups = {};
 
+  /// Adds a dependency to this watcher.
   void addDepend(ReactiveNotifier ref) {
     watchers.add(ref);
   }
 
+  /// Gets the current compute.
   Picker? getCC() {
     return computes[currentIndexCompute++];
   }
 
+  /// Sets the current compute.
   Picker setCC(Picker cc) {
     return computes[currentIndexCompute - 1] = cc;
   }
 
+  /// Registers a cleanup function to be called when the watcher is disposed.
   void onCleanup(VoidCallback callback) {
     _cleanups.add(callback);
   }
@@ -42,6 +52,7 @@ mixin class WatcherRaw<T> {
     _cleanups.clear();
   }
 
+  /// Runs the watcher and returns the result.
   T run() {
     if (_firstRun) {
       _firstRun = false;
@@ -83,6 +94,7 @@ mixin class WatcherRaw<T> {
     return output;
   }
 
+  /// Disposes of the watcher.
   void dispose2() {
     _listenable?.removeListener(onChange);
     _listenable = null;
@@ -99,6 +111,7 @@ mixin class WatcherRaw<T> {
   }
 }
 
+/// A mixin that provides watcher functionality to a [ReactiveNotifier].
 mixin Watcher<T> on WatcherRaw<T>, ReactiveNotifier<T> {
   @override
   void dispose() {

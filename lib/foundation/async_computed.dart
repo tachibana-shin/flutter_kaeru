@@ -38,12 +38,12 @@ class AsyncComputed<T> extends ReactiveNotifier<T?> {
 
   /// Creates an instance of [AsyncComputed] with the given async function.
   ///
-  /// - [_getValue]: The function that fetches the computed value asynchronously.
-  /// - [defaultValue]: A default value before the async computation completes.
-  /// - [beforeUpdate]: A function to set a temporary value before computation.
-  /// - [notifyBeforeUpdate]: If true, notifies listeners when [beforeUpdate] sets a new value.
-  /// - [onError]: Callback function for handling errors during async computation.
-  /// - [immediate]: If true, starts the async computation immediately upon creation.
+  /// - `getValue`: The function that fetches the computed value asynchronously.
+  /// - `defaultValue`: A default value before the async computation completes.
+  /// - `beforeUpdate`: A function to set a temporary value before computation.
+  /// - `notifyBeforeUpdate`: If true, notifies listeners when `beforeUpdate` sets a new value.
+  /// - `onError`: Callback function for handling errors during async computation.
+  /// - `immediate`: If true, starts the async computation immediately upon creation.
   AsyncComputed(this._getValue,
       {T? defaultValue,
       this.beforeUpdate,
@@ -90,28 +90,17 @@ class AsyncComputed<T> extends ReactiveNotifier<T?> {
     return _value;
   }
 
-  /// Adds a listener to track changes in the computed value.
-  @override
   /// Adds a listener to be notified when the computed value changes.
   ///
   /// The computation is triggered before adding the listener,
   /// so that the listener can be notified of the initial value.
-  ///
-  /// Parameters:
-  ///   listener - The callback function to be notified when the value changes.
-  ///
-  /// Returns:
-  ///   None
+  @override
   void addListener(VoidCallback listener) {
     value;
     super.addListener(listener);
   }
 
   /// Forces the computed value to the given [value], notifying listeners if the value changes.
-  /// 
-  /// - [value]: The new value to be set.
-  /// 
-  /// Returns nothing.
   void force(T? value) {
     if (_value != value) {
       _value = value;

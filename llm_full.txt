@@ -1,0 +1,282 @@
+
+# Kaeru Library Full Documentation
+
+This document provides a comprehensive overview of the `flutter_kaeru` library, including all public APIs, hooks, and documentation, intended for use by Large Language Models.
+
+---
+
+## Core Concepts
+
+`flutter_kaeru` is a reactive state management library for Flutter, inspired by the Vue Composition API. It helps you manage your widget's state in a declarative and organized way.
+
+- **`KaeruWidget`**: The foundation of the library. Extend this class to create a widget with a reactive context.
+- **`setup()`**: The entry point for your widget's logic, defined within a `KaeruWidget`. This is where you'll declare your reactive state and lifecycle hooks.
+- **Reactivity**:
+  - `ref<T>(initialValue)`: Creates a reactive reference. Access its value with `.value`.
+  - `computed<T>(Function() compute)`: Creates a calculated value that automatically updates when its dependencies change.
+  - `asyncComputed<T>(Future<T> Function() compute)`: A version of `computed` for asynchronous operations.
+- **Watchers**:
+  - `watchEffect(Function() effect)`: Runs a function immediately and re-runs it whenever its reactive dependencies change.
+  - `watch(Iterable<Listenable?>, Function() callback)`: Triggers a callback when specific reactive sources change.
+- **Lifecycle Hooks**: Functions like `onMounted`, `onUpdated`, and `onBeforeUnmount` allow you to tap into the widget's lifecycle from within your `setup()` method.
+- **Flutter Hooks**: A collection of hooks (e.g., `useAnimationController`, `useTextEditingController`) that automatically manage the lifecycle of various Flutter objects.
+
+---
+
+## Main Public API (`kaeru.dart`)
+
+This is the main entry point for the library.
+
+```dart
+/// A reactive state management library for Flutter, inspired by Vue Composition API.
+library kaeru;
+
+// Core reactivity
+export 'foundation/ref.dart';
+export 'foundation/computed.dart';
+export 'foundation/async_computed.dart';
+export 'foundation/prop.dart';
+
+// Main widget
+export 'widget/kaeru_widget/kaeru_widget.dart';
+
+// Helper widgets and functions
+export 'widget/watch.dart';
+export 'widget/kareu_builder.dart';
+export 'composables/next_tick.dart';
+export 'composables/on_watcher_cleanup.dart';
+export 'composables/use_pick.dart';
+export 'composables/watch_effect.dart';
+export 'composables/watch.dart';
+
+// Mixins
+export 'mixins/kaeru_life_mixin.dart';
+export 'mixins/kaeru_listen_mixin.dart';
+export 'mixins/kaeru_mixin.dart';
+
+// Extensions
+export 'extensions/value_notifier_to_ref.dart';
+
+// Exceptions
+export 'composables/exception/no_watcher_found_exception.dart';
+```
+
+---
+
+## Key Classes and Functions
+
+### `KaeruWidget`
+
+The primary widget you will use.
+
+**File:** `lib/widget/kaeru_widget/kaeru_widget.dart`
+
+```dart
+/// A widget that provides a reactive context for its children.
+class KaeruWidget<W extends StatefulWidget> extends StatefulWidget {
+  /// A function that returns a widget. This is where you define your widget's
+  /// reactive state and logic.
+  @protected
+  Setup setup() {
+    throw UnimplementedError('setup must be implemented');
+  }
+
+  /// Creates a [Computed] that depends on the widget's properties.
+  /// This is useful for creating derived state from parent widget properties.
+  Computed<T> prop<T>(T Function(W w) compute) {
+    // ... implementation
+  }
+
+  const KaeruWidget({super.key});
+}
+
+/// The state for a [KaeruWidget].
+class KaeruWidgetState<T extends StatefulWidget> extends State<KaeruWidget<T>>
+    with KaeruMixin, KaeruLifeMixin {
+  // ... implementation
+}
+
+/// A function that returns a widget.
+typedef Setup = Widget Function();
+```
+
+### Reactivity Hooks
+
+These are the core functions for creating and managing reactive state. They must be called inside the `setup()` method of a `KaeruWidget`.
+
+**File:** `lib/widget/kaeru_widget/reactive.dart`
+
+```dart
+/// Creates a reactive [Ref] with the given initial [value].
+/// The widget will rebuild when the `.value` of the ref changes.
+Ref<T> ref<T>(T initialValue);
+
+/// Creates a reactive [Computed] with the provided [getter] function.
+/// The computed value is cached and only re-evaluates when its dependencies change.
+Computed<T> computed<T>(T Function() compute);
+
+/// Creates an instance of [AsyncComputed] with the given async function.
+/// Useful for handling asynchronous data sources reactively.
+AsyncComputed<T> asyncComputed<T>(Future<T> Function() compute);
+
+/// Sets up a reactive effect triggered by [callback].
+/// The effect runs immediately and re-runs whenever any reactive dependency
+/// inside it changes.
+VoidCallback watchEffect(VoidCallback effect);
+
+/// Sets up a watcher on the given [source] and triggers the [callback] when any
+/// of the [Listenable] objects in the source change.
+VoidCallback watch(Iterable<Listenable?> source, VoidCallback callback, {bool immediate = false});
+```
+
+### Lifecycle Hooks
+
+These functions allow you to hook into the widget's lifecycle from within the `setup()` method.
+
+**File:** `lib/widget/kaeru_widget/life.dart`
+
+```dart
+/// Registers a callback to be called when the widget is first mounted (initState).
+void onMounted(VoidCallback callback);
+
+/// Registers a callback to be called when the widget's dependencies change (didChangeDependencies).
+void onDependenciesChanged(VoidCallback callback);
+
+/// Registers a callback to be called when the widget is updated (didUpdateWidget).
+void onUpdated(void Function(StatefulWidget) callback);
+
+/// Registers a callback to be called before the widget is unmounted (dispose).
+void onBeforeUnmount(VoidCallback callback);
+
+/// Registers a callback to be called when the widget is deactivated.
+void onDeactivated(VoidCallback callback);
+
+/// Registers a callback to be called when the widget is activated.
+void onActivated(VoidCallback callback);
+
+/// Registers a callback for debugging purposes (debugFillProperties).
+void onDebugFillProperties(void Function(DiagnosticPropertiesBuilder properties) callback);
+
+/// Registers a callback to be called just before the widget's build method is called.
+void onBeforeBuild(void Function(BuildContext context) callback);
+```
+
+### Flutter Hooks
+
+These hooks simplify the management of common Flutter objects by handling their lifecycle automatically. They must be called inside the `setup()` method.
+
+**File:** `lib/widget/kaeru_widget/composables/flutter.dart`
+
+```dart
+/// Creates an [AnimationController] that is automatically disposed.
+AnimationController useAnimationController({
+  TickerProvider? vsync,
+  Duration? duration,
+  // ... other parameters
+});
+
+/// Creates a [TabController] that is automatically disposed.
+TabController useTabController({
+  required int length,
+  TickerProvider? vsync,
+  // ... other parameters
+});
+
+/// Creates a [ScrollController] that is automatically disposed.
+ScrollController useScrollController({
+  // ... parameters
+});
+
+/// Creates a [PageController] that is automatically disposed.
+PageController usePageController({
+  // ... parameters
+});
+
+/// Creates a [TextEditingController] that is automatically disposed.
+TextEditingController useTextEditingController([String? text]);
+
+/// Creates a [FocusNode] that is automatically disposed.
+FocusNode useFocusNode({
+  // ... parameters
+});
+
+/// Creates a [FocusScopeNode] that is automatically disposed.
+FocusScopeNode useFocusScopeNode({String? debugLabel});
+
+/// Creates a [ValueNotifier] that is automatically disposed.
+ValueNotifier<T> useValueNotifier<T>(T value);
+
+/// Manages a [ChangeNotifier], ensuring it is automatically disposed.
+T useNotifier<T extends ChangeNotifier>(T notifier);
+
+/// Creates a [TransformationController] that is automatically disposed.
+TransformationController useTransformationController([Matrix4? value]);
+
+/// Creates a [StreamController] that is automatically closed.
+StreamController<T> useStreamController<T>({bool sync = false});
+
+/// Creates a [StreamSubscription] that is automatically cancelled.
+StreamSubscription<T> useStreamSubscription<T>(
+  Stream<T> stream,
+  void Function(T event)? onData, {
+  // ... other parameters
+});
+
+/// Creates a [Timer] that is automatically cancelled.
+Timer useTimer(Duration duration, void Function() callback, {bool periodic = false});
+
+/// Creates an [OverlayEntry] that is automatically removed.
+OverlayEntry useOverlayEntry(WidgetBuilder builder);
+```
+
+### Other Utility Hooks
+
+**File:** `lib/widget/kaeru_widget/composables/`
+
+```dart
+/// Retrieves the current [BuildContext] from the [KaeruWidget].
+/// Must be called within a `KaeruWidget`.
+BuildContext useContext();
+
+/// Provides an [AutomaticKeepAliveClientMixin] to keep a widget alive in lists.
+AutomaticKeepAliveClientMixin useKeepAliveClient({bool wantKeepAlive = true});
+
+/// Provides restoration capabilities for widgets, integrating with [RestorationMixin].
+RestorationMixin useRestoration({
+  String? restorationId,
+  required void Function(RestorationBucket? oldBucket, bool initialRestore) restoreState,
+  required void Function(RestorationBucket? oldBucket) didToggleBucket,
+  // ... other parameters
+});
+
+/// Provides a single [TickerProvider] for animations.
+TickerProvider useSingleTickerState();
+
+/// Retrieves the current widget instance of a specific type from the context.
+T useWidget<T extends Widget>();
+```
+
+---
+
+## Foundational Classes
+
+These are the low-level classes that power the reactivity system. You will typically use the hooks above instead of interacting with these directly.
+
+### `Ref<T>`
+**File:** `lib/foundation/ref.dart`
+- A reactive container holding a single value. Access and modify it via the `.value` property.
+
+### `Computed<T>`
+**File:** `lib/foundation/computed.dart`
+- A reactive class for values that are computed on demand and cached. It only recomputes when its dependencies change.
+
+### `AsyncComputed<T>`
+**File:** `lib/foundation/async_computed.dart`
+- A version of `Computed` for values that are derived from an asynchronous operation.
+
+### `Watch` Widget
+**File:** `lib/widget/watch.dart`
+- A widget that automatically rebuilds when any reactive dependency inside its `builder` function changes. The `setup()` method in `KaeruWidget` uses this internally.
+
+---
+**End of Documentation**

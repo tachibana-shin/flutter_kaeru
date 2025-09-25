@@ -1,6 +1,7 @@
 import '../foundation/computed.dart';
 import 'shared/get_current_instance.dart';
 
+/// A class that memoizes a [Computed] value.
 class Picker<T> {
   final Computed<T> Function() _getCompute;
   Computed<T>? compute;
@@ -19,6 +20,8 @@ class Picker<T> {
   }
 }
 
+/// Memoizes a [Computed] value and returns a [Picker] that can be used to
+/// access the value.
 Picker<T> usePick<T>(T Function() selector) {
   final currentWatcher = getCurrentInstance();
 

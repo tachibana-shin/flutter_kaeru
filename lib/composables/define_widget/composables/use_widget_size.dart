@@ -2,12 +2,20 @@ import 'package:flutter/widgets.dart';
 import 'package:kaeru/kaeru.dart';
 import '../main.dart';
 
+/// Return type for [useWidgetSize].
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 typedef UseWidgetSizeReturn = ({
   GlobalKey key,
   Ref<double?> width,
   Ref<double?> height
 });
 
+/// A hook that provides the size of a widget.
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 UseWidgetSizeReturn useWidgetSize(GlobalKey key) {
   final width = $ref<double?>(null);
   final height = $ref<double?>(null);

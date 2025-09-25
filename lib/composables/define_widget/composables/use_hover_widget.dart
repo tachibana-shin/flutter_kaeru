@@ -3,13 +3,25 @@ import 'package:flutter/widgets.dart';
 import 'package:kaeru/kaeru.dart';
 import '../main.dart';
 
+/// Defines the hover detection mode.
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 enum HoverMode { mouse, touch, both, atomic }
 
+/// Return type for [useHoverWidget].
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 typedef UseHoverWidgetReturn = ({
   Ref<bool> isHover,
   Widget Function(WidgetBuilder builder) hoverWrap,
 });
 
+/// A hook that provides hover detection for a widget.
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 UseHoverWidgetReturn useHoverWidget({HoverMode mode = HoverMode.atomic}) {
   final isHover = $ref(false);
   final key = GlobalKey();

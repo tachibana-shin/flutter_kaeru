@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kaeru/mixins/kaeru_life_mixin.dart';
 
 import 'package:kaeru/widget/kaeru_widget/life.dart';
 
 import 'use_context.dart';
 
-/// A hook that provides an AutomaticKeepAliveClientMixin for keeping a widget alive
+/// A hook that provides an [AutomaticKeepAliveClientMixin] for keeping a widget alive
 /// even when it is not visible.
-///
-/// This is useful for preserving the state of a widget when it is removed from the
-/// widget tree and later reinserted.
-///
-/// Example:
-/// ```dart
-/// final keepAliveClient = useKeepAliveClient();
-/// ```
 ///
 /// This is useful for preserving the state of a widget when it is removed from the
 /// widget tree and later reinserted.
@@ -52,4 +45,10 @@ class _KeepAliveClient extends State<StatefulWidget>
   get context => _contextOutside;
   @override
   get wantKeepAlive => _wantKeepAliveOutside;
+
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return const NullWidget();
+  }
 }

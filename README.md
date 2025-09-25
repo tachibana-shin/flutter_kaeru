@@ -4,7 +4,7 @@
 
 **Kaeru** is a comprehensive and efficient reactivity system for Flutter, inspired by Vue 3's `@vue/reactivity`. It provides a fully functional reactive programming model that makes state management in Flutter simple, optimized, and declarative.
 
-## 🚀 Features
+## 🚀 Core Features
 
 - **Fully reactive state management** with `Ref`, `Computed`, `AsyncComputed`, and `watchEffect`.
 - **Automatic dependency tracking** for efficient updates.
@@ -47,8 +47,7 @@ import 'package:kaeru/kaeru.dart';
 
 ## New API `KaeruWidget`
 
-Easy create new widget:
-All system and hook ready!
+The `setup()` method returns a `Widget Function()`, which acts as your `build` method.
 
 ```dart
 class CounterWidget extends KaeruWidget<CounterWidget> {
@@ -153,6 +152,17 @@ Computed<double> useScaleWidth(Ref<double> ref) {
   - Enable Flutter core behavior without creating State manually.
 - **Dynamic delegate pattern**:
   - Combine multiple delegates (Animation, Scroll, Tab, ValueNotifier) with auto setup & dispose.
+
+
+## ✨ For Large Language Models (LLMs)
+
+This repository includes special files to help you understand and generate code for this library.
+
+- **`llm.txt`**: A concise guide covering the main concepts and providing a quick-start example. Use this for a general overview.
+- **`llm_full.txt`**: A comprehensive documentation file containing detailed descriptions of every public class, function, and hook. Use this as a full reference for generating detailed or complex code.
+
+When asked to work with this library, refer to these files to ensure your generated code is accurate and idiomatic.
+
 
 ---
 
@@ -491,359 +501,46 @@ Runs a callback after the current microtask queue is flushed (similar to `Promis
 
 #### Parameters:
 
-| Parameter  | Type            | Description                                |
-| ---------- | --------------- | ------------------------------------------ |
-| `callback` | `VoidCallback?` | (Optional) Function to run after the tick. |
+| Function | Description |
+| --- | --- |
+| `ref<T>(value)` | Creates a reactive reference. Access/modify its content via the `.value` property. |
+| `computed<T>(fn)` | Creates a read-only, cached value that is derived from other reactive sources. |
+| `asyncComputed<T>(fn)` | A version of `computed` for asynchronous operations, returning `null` until the future completes. |
+| `watchEffect(fn)` | Runs a function immediately and re-runs it automatically whenever any of its reactive dependencies change. |
+| `watch(sources, fn)` | Triggers a callback only when specific `sources` change. |
+| `prop<T>(fn)` | Creates a reactive `Computed` property from the parent widget's attributes. |
 
-#### Example:
+### 2. Lifecycle Hooks
 
-```dart
-await nextTick();
-// or
-await nextTick(() {
-  // code to run after the tick
-});
-```
+Manage your widget's side effects with simple lifecycle functions inside `setup()`:
 
----
+| Hook | Description |
+| --- | --- |
+| `onMounted(fn)` | Called once after the widget is first inserted into the widget tree. |
+| `onUpdated(fn)` | Called after the widget updates. |
+| `onBeforeUnmount(fn)` | Called just before the widget is removed from the widget tree. Perfect for cleanup. |
+| `onDeactivated(fn)` | Called when the widget is deactivated. |
+| `onActivated(fn)` | Called when the widget is re-inserted into the tree after being deactivated. |
 
-### 📌 Kaeru Lifecycle & Listening Mixins
+### 3. Flutter Hooks
 
-**KaeruLifeMixin** and **KaeruListenMixin** are powerful mixins designed to simplify Flutter development by providing Vue-like lifecycle hooks and reactive state listening.
+Kaeru provides `use*` hooks that automatically create and dispose of common Flutter objects.
 
-### 🎯 Why Use These Mixins?
-
-✅ Cleaner code: No need to override multiple lifecycle methods or manage listeners manually.
-✅ Reusable: Apply them to any StatefulWidget to enhance reactivity.
-✅ Inspired by Vue: Provides a familiar development experience for reactive state management.
-
-### 🟢 KaeruLifeMixin
-
-**KaeruLifeMixin** provides Vue-like lifecycle hooks for `StatefulWidget`. It enables multiple callbacks for different lifecycle events.
-
-#### 🚀 Features
-
-- `onMounted()`: Called when the widget is first created (`initState`).
-- `onDependenciesChanged()`: Called when dependencies change (`didChangeDependencies`).
-- `onUpdated()`: Called when the widget receives updated properties (`didUpdateWidget`).
-- `onDeactivated()`: Called when the widget is temporarily removed (`deactivate`).
-- `onBeforeUnmount()`: Called just before the widget is disposed (`dispose`).
-
-#### 📝 Example Usage
-
-```dart
-class MyComponent extends StatefulWidget {
-  @override
-  _MyComponentState createState() => _MyComponentState();
-}
-
-class _MyComponentState extends State<MyComponent> with KaeruLifeMixin<MyComponent> {
-  @override
-  void initState() {
-    super.initState();
-
-    onMounted(() => print('✅ Widget Mounted!'));
-    onDependenciesChanged(() => print('🔄 Dependencies Changed!'));
-    onUpdated(() => print('♻️ Widget Updated!'));
-    onDeactivated(() => print('⚠️ Widget Deactivated!'));
-    onBeforeUnmount(() => print('🗑 Widget Disposed!'));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Text('KaeruLifeMixin Example');
-  }
-}
-```
-
-### 🟢 KaeruListenMixin
-
-**KaeruListenMixin** simplifies listening to `ChangeNotifier` updates within a `StatefulWidget`. It allows adding listeners dynamically and managing their cleanup automatically.
-
-#### 🚀 Features
-
-- `listen()`: Subscribes to a single `ChangeNotifier` and executes a callback when it changes.
-- `listenAll()`: Subscribes to multiple `ChangeNotifiers` with a single callback.
-- Returns a cancel function to remove listeners when necessary.
-
-#### 📝 Example Usage
-
-##### Listening to a Single Notifier
-
-```dart
-class MyNotifier extends ChangeNotifier {
-  void update() {
-    notifyListeners();
-  }
-}
-
-class MyComponent extends StatefulWidget {
-  @override
-  _MyComponentState createState() => _MyComponentState();
-}
-
-class _MyComponentState extends State<MyComponent> with KaeruListenMixin<MyComponent> {
-  final myNotifier = MyNotifier();
-  VoidCallback? cancelListener;
-
-  @override
-  void initState() {
-    super.initState();
-
-    cancelListener = listen(myNotifier, () {
-      print('Single notifier changed!');
-    });
-  }
-
-  @override
-  void dispose() {
-    cancelListener?.call();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Text('Listening to a single ChangeNotifier');
-  }
-}
-```
-
-##### Listening to Multiple Notifiers
-
-```dart
-class NotifierA extends ChangeNotifier {
-  void update() => notifyListeners();
-}
-
-class NotifierB extends ChangeNotifier {
-  void update() => notifyListeners();
-}
-
-class MyComponent extends StatefulWidget {
-  @override
-  _MyComponentState createState() => _MyComponentState();
-}
-
-class _MyComponentState extends State<MyComponent> with KaeruListenMixin<MyComponent> {
-  final notifierA = NotifierA();
-  final notifierB = NotifierB();
-  VoidCallback? cancelListeners;
-
-  @override
-  void initState() {
-    super.initState();
-
-    cancelListeners = listenAll([notifierA, notifierB], () {
-      print('One of the notifiers changed!');
-    });
-  }
-
-  @override
-  void dispose() {
-    cancelListeners?.call();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Text('Listening to multiple ChangeNotifiers');
-  }
-}
-```
-
-### ✨ Summary
-
-| Feature            | KaeruLifeMixin                                                | KaeruListenMixin                                 |
-| ------------------ | ------------------------------------------------------------- | ------------------------------------------------ |
-| Lifecycle Hooks    | ✅ Provides `onMounted`, `onUpdated`, `onBeforeUnmount`, etc. | ❌ Not applicable                                |
-| Reactive Listeners | ❌ Not applicable                                             | ✅ Handles `ChangeNotifier` updates              |
-| Automatic Cleanup  | ✅ Hooks are executed at proper lifecycle stages              | ✅ Listeners are removed automatically           |
-| Code Simplicity    | ✅ Reduces the need for overriding multiple lifecycle methods | ✅ Manages `ChangeNotifier` subscriptions easily |
-
-🚀 **KaeruLifeMixin** is perfect for handling widget lifecycle events.
-🔄 **KaeruListenMixin** makes managing `ChangeNotifier` listeners easy.
+| Hook | Description |
+| --- | --- |
+| `useAnimationController()` | Creates and disposes of an `AnimationController`. |
+| `useTabController()` | Creates and disposes of a `TabController`. |
+| `useScrollController()` | Creates and disposes of a `ScrollController`. |
+| `useTextEditingController()` | Creates and disposes of a `TextEditingController`. |
+| `useFocusNode()` | Creates and disposes of a `FocusNode`. |
+| `useSingleTickerState()` | Provides a `TickerProvider` for animations. |
+| `useKeepAliveClient()` | Keeps a widget alive in a list (e.g., `ListView`). |
+| `useContext()` | Gets the current `BuildContext`. |
+| `useWidget<T>()` | Gets the current widget instance. |
 
 ---
 
-## 🎯 API Summary
-
-| Feature                 | Supported |
-| ----------------------- | --------- |
-| `Ref<T>`                | ✅        |
-| `Computed<T>`           | ✅        |
-| `AsyncComputed<T>`      | ✅        |
-| `watchEffect`           | ✅        |
-| `watch`                 | ✅        |
-| `KaeruMixin`            | ✅        |
-| `Watch` Widget          | ✅        |
-| `ValueNotifier.toRef()` | ✅        |
-| `ReactiveNotifier<T>`   | ✅        |
-
-This package provides an intuitive and efficient reactivity system for Flutter, making state management much easier and more performant. 🚀
-
-## Example
-
-`example/lib/main.dart`
-
-```dart
-import 'package:flutter/material.dart';
-import 'package:kaeru/kaeru.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(context) {
-    return MaterialApp(
-        home: Scaffold(
-            appBar: AppBar(title: const Text("Kaeru Example")),
-            body: Padding(padding: const EdgeInsets.all(16.0), child: App2())));
-  }
-}
-
-class App2 extends StatelessWidget {
-  final showCounter = Ref(true);
-
-  App2({super.key});
-
-  @override
-  Widget build(context) {
-    return Watch(() => Row(children: [
-          ElevatedButton(
-            onPressed: () {
-              showCounter.value = !showCounter.value;
-            },
-            child: Text(showCounter.value ? 'hide' : 'show'),
-          ),
-          if (showCounter.value) Counter()
-        ]));
-  }
-}
-
-class Counter extends StatefulWidget {
-  const Counter({super.key});
-
-  @override
-  State<Counter> createState() => _CounterState();
-}
-
-class _CounterState extends State<Counter> with KaeruMixin, KaeruLifeMixin {
-  late final foo = ref<int>(0);
-  late final fooDouble = computed(() => foo.value * 2);
-  late final fooDoublePlus = Computed<int>(() => foo.value + 1);
-  late final fooGtTeen = computed<bool>(() {
-    print('Computed call');
-    return fooDouble.value > 10;
-  });
-  late final computedOnlyListen = computed(() => foo.value);
-  final bar = Ref<int>(0);
-
-  @override
-  void initState() {
-    watchEffect(() {
-      print('watchEffect run');
-
-      if (fooDoublePlus.value % 2 == 0) return;
-      print('foo + bar = ${foo.value + bar.value}');
-    });
-
-    watch$([computedOnlyListen], () {
-      print('computed only listen changed');
-    });
-
-    onMounted(() => print('✅ Widget Mounted!'));
-    onDependenciesChanged(() => print('🔄 Dependencies Changed!'));
-    onUpdated(() => print('♻️ Widget Updated!'));
-    onDeactivated(() => print('⚠️ Widget Deactivated!'));
-    onBeforeUnmount(() => print('🗑 Widget Disposed!'));
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    print('Root render');
-
-    return Column(
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            foo.value++;
-          },
-          child: const Text("Increase foo"),
-        ),
-        const SizedBox(height: 8),
-        ElevatedButton(
-          onPressed: () {
-            bar.value++;
-          },
-          child: const Text("Increase bar"),
-        ),
-        const SizedBox(height: 16),
-        Watch(() {
-          print('Watch render');
-          if (fooGtTeen.value) {
-            return Watch(() {
-              print('Watch child 1 render');
-
-              return Text("Bar: ${bar.value}");
-            });
-          } else {
-            return Text("Bar: ${bar.value}");
-          }
-        }),
-        Watch(() {
-          print('Widget parent ShowFoo render');
-          return bar.value % 2 == 0 ? SizedBox.shrink() : ShowFoo(foo: foo);
-        })
-      ],
-    );
-  }
-}
-
-class ShowFoo extends StatefulWidget {
-  final Ref<int> foo;
-
-  const ShowFoo({super.key, required this.foo});
-
-  @override
-  createState() => _ShowFooState();
-}
-
-class _ShowFooState extends State<ShowFoo> with KaeruListenMixin, KaeruMixin {
-  late final _fooDouble = computed(() {
-    print('ShowFoo computed emit change');
-    return widget.foo.value * 2;
-  });
-  @override
-  void initState() {
-    listen(widget.foo, () {
-      print('ShowFoo emit change foo ${widget.foo.value}');
-    });
-
-    super.initState();
-  }
-
-  @override
-  Widget build(context) {
-    return Column(children: [
-      Watch(() => Text('ShowFoo: ${widget.foo.value}')),
-      Watch(() => Text('foo * 2 = ${_fooDouble.value}'))
-    ]);
-  }
-}
-```
-
-## 🛠 Contributing
+## 🏗 Contributing
 
 Pull requests and feature requests are welcome! Feel free to open an issue or contribute.
 

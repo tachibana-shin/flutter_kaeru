@@ -118,35 +118,12 @@ class _SingleTickerState implements TickerProvider {
 ///   duration: const Duration(seconds: 1),
 /// );
 /// ```
-/// Provides a hook to create a single ticker state for animations.
-///
-/// This hook returns a [TickerProvider] that can be used with
-/// [AnimationController] and other animation-related classes.
-///
-/// Example:
-/// ```dart
-/// final tickerProvider = useSingleTickerState();
-/// final animationController = AnimationController(
-///   vsync: tickerProvider,
-///   duration: const Duration(seconds: 1),
-/// );
-/// ```
-///
-/// Returns a [TickerProvider] that can be used for animations.
 TickerProvider useSingleTickerState() {
-  /// The [BuildContext] used to create the ticker.
   final context = useContext();
-
-  /// The ticker state that provides the TickerProvider.
   final ticker = _SingleTickerState(context);
 
-  /// Activates the ticker when the widget is mounted.
   onActivated(ticker.activate);
-
-  /// Disposes the ticker before the widget is unmounted.
   onBeforeUnmount(ticker.dispose);
-
-  /// Adds debug information for the ticker.
   onDebugFillProperties(ticker.debugFillProperties);
 
   return ticker;

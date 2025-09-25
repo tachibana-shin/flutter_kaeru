@@ -11,6 +11,7 @@ export 'composables/use_widget.dart';
 export 'life.dart';
 export 'reactive.dart';
 
+/// A function that returns a widget.
 typedef Setup = Widget Function();
 
 KaeruMixin? _kaeruContext;
@@ -24,6 +25,7 @@ void _restoreKaeruContext(KaeruMixin? old) {
   _kaeruContext = old;
 }
 
+/// Returns the current [KaeruMixin] instance.
 KaeruMixin? useKaeruContext() {
   return _kaeruContext;
 }
@@ -39,16 +41,20 @@ void _restoreLifeContext(KaeruLifeMixin? old) {
   _lifeContext = old;
 }
 
+/// Returns the current [KaeruLifeMixin] instance.
 KaeruLifeMixin? useLifeContext() {
   return _lifeContext;
 }
 
+/// A widget that provides a reactive context for its children.
 class KaeruWidget<W extends StatefulWidget> extends StatefulWidget {
+  /// A function that returns a widget.
   @protected
   Setup setup() {
     throw UnimplementedError('setup must be implemented');
   }
 
+  /// Creates a [Computed] that depends on the widget's properties.
   Computed<T> prop<T>(T Function(W w) compute) {
     assert(
         _kaeruContext != null, 'Reactivity must be used within a KaeruMixin');
@@ -67,6 +73,7 @@ class KaeruWidget<W extends StatefulWidget> extends StatefulWidget {
   createState() => KaeruWidgetState<W>();
 }
 
+/// The state for a [KaeruWidget].
 class KaeruWidgetState<T extends StatefulWidget> extends State<KaeruWidget<T>>
     with KaeruMixin, KaeruLifeMixin {
   late final Setup _setup;

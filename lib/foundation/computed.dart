@@ -109,6 +109,7 @@ class Computed<T> extends ReactiveNotifier<T> with WatcherRaw<T>, Watcher<T> {
     }
   }
 
+  /// Notifies listeners of a change.
   void notify() {
     notifyListeners();
   }

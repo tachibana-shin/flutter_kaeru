@@ -10,6 +10,9 @@ import '../shared/watcher.dart';
 ///
 /// Returns a [VoidCallback] that can be used to remove the listener when it's
 /// no longer needed.
+///
+/// The `$` suffix is used to indicate that this is a low-level function that
+/// should be used with caution.
 VoidCallback watch$(Iterable<Listenable?> source, VoidCallback callback,
     {bool immediate = false}) {
   final watcher = WatcherRaw<void>();

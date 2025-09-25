@@ -1,25 +1,5 @@
 import 'package:flutter/widgets.dart';
 
-/// A hook that provides restoration capabilities for widgets.
-///
-/// This hook allows you to manage the restoration of state across
-/// app restarts and other lifecycle events. It integrates with the
-/// [RestorationMixin] to enable automatic restoration of properties
-/// that need to be preserved.
-///
-/// Example:
-/// ```dart
-/// final restoration = useRestoration(
-///   restorationId: 'my_widget',
-///   restoreState: (oldBucket, initialRestore) {
-///     // Restore your state here
-///   },
-///   didToggleBucket: (oldBucket) {
-///     // Handle bucket toggling here
-///   },
-/// );
-/// ```
-
 import 'package:kaeru/mixins/kaeru_life_mixin.dart';
 import 'package:kaeru/widget/kaeru_widget/life.dart';
 
@@ -142,5 +122,5 @@ class _Restoration extends State<StatefulWidget> with RestorationMixin {
   }
 
   @override
-  Widget build(_) => NullWidget();
+  Widget build(_) => const NullWidget();
 }

@@ -13,6 +13,8 @@ import 'auto_dispose.dart';
 ///
 /// The [Ref] instance is automatically disposed when the widget is disposed.
 ///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+///
 /// Example:
 ///
 /// ```dart
@@ -32,6 +34,7 @@ import 'auto_dispose.dart';
 ///    whenever its dependencies change, and can be used with async functions.
 ///  * [watch], which allows you to listen to changes to a list of values.
 ///  * [watchEffect], which allows you to listen to changes to a function.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 Ref<U> $ref<U>(U value) => autoContextDispose(Ref(value));
 
 /// Creates a reactive [Computed] with the provided [getter] function.
@@ -39,6 +42,9 @@ Ref<U> $ref<U>(U value) => autoContextDispose(Ref(value));
 /// to notify listeners when it is updated.
 ///
 /// The [Computed] instance is automatically disposed when the widget is disposed.
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 Computed<U> $computed<U>(U Function() getter) =>
     autoContextDispose(Computed(getter));
 
@@ -52,6 +58,9 @@ Computed<U> $computed<U>(U Function() getter) =>
 /// - [immediate]: If true, starts the async computation immediately upon creation.
 ///
 /// The [AsyncComputed] instance is automatically disposed when the widget is disposed.
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 AsyncComputed<U> $asyncComputed<U>(final Future<U> Function() getValue,
         {U? defaultValue,
         U? Function()? beforeUpdate,
@@ -69,6 +78,9 @@ AsyncComputed<U> $asyncComputed<U>(final Future<U> Function() getValue,
 /// to dispose of the effect when it’s no longer needed.
 ///
 /// The [watchEffect] instance is automatically disposed when the widget is disposed.
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 VoidCallback $watchEffect(VoidCallback callback) =>
     autoContextDisposeFn(watchEffect$(callback));
 
@@ -80,6 +92,9 @@ VoidCallback $watchEffect(VoidCallback callback) =>
 /// no longer needed.
 ///
 /// The [watch] instance is automatically disposed when the widget is disposed.
+///
+/// **Note:** This is part of the deprecated `defineWidget` API.
+@Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
 VoidCallback $watch(Iterable<Listenable?> source, VoidCallback callback,
         {bool immediate = false}) =>
     autoContextDisposeFn(watch$(source, callback, immediate: immediate));

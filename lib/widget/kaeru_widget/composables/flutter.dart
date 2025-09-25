@@ -24,7 +24,9 @@ import 'package:flutter/material.dart';
 import '../life.dart';
 import 'use_single_ticker_state.dart';
 
-/// --- Animation & Tab ---
+/// Creates an [AnimationController].
+///
+/// The controller is automatically disposed when the widget is unmounted.
 AnimationController useAnimationController({
   /// An optional [vsync] parameter to synchronize the animation.
   /// If not provided, a ticker will be created automatically.
@@ -50,6 +52,9 @@ AnimationController useAnimationController({
   return c;
 }
 
+/// Creates a [TabController].
+///
+/// The controller is automatically disposed when the widget is unmounted.
 TabController useTabController({
   /// An optional [vsync] parameter to synchronize the tab animations.
   /// If not provided, a ticker will be created automatically.
@@ -69,7 +74,9 @@ TabController useTabController({
   return c;
 }
 
-/// --- Scroll / Page ---
+/// Creates a [ScrollController].
+///
+/// The controller is automatically disposed when the widget is unmounted.
 ScrollController useScrollController({
   double initialScrollOffset = 0.0,
   bool keepScrollOffset = true,
@@ -84,6 +91,9 @@ ScrollController useScrollController({
   return c;
 }
 
+/// Creates a [PageController].
+///
+/// The controller is automatically disposed when the widget is unmounted.
 PageController usePageController({
   int initialPage = 0,
   bool keepPage = true,
@@ -98,14 +108,18 @@ PageController usePageController({
   return c;
 }
 
-/// --- Text ---
+/// Creates a [TextEditingController].
+///
+/// The controller is automatically disposed when the widget is unmounted.
 TextEditingController useTextEditingController([String? text]) {
   final c = TextEditingController(text: text);
   onBeforeUnmount(c.dispose);
   return c;
 }
 
-/// --- Focus ---
+/// Creates a [FocusNode].
+///
+/// The node is automatically disposed when the widget is unmounted.
 FocusNode useFocusNode({
   String? debugLabel,
   bool canRequestFocus = true,
@@ -122,32 +136,44 @@ FocusNode useFocusNode({
   return n;
 }
 
+/// Creates a [FocusScopeNode].
+///
+/// The node is automatically disposed when the widget is unmounted.
 FocusScopeNode useFocusScopeNode({String? debugLabel}) {
   final n = FocusScopeNode(debugLabel: debugLabel);
   onBeforeUnmount(n.dispose);
   return n;
 }
 
-/// --- Notifiers ---
+/// Creates a [ValueNotifier].
+///
+/// The notifier is automatically disposed when the widget is unmounted.
 ValueNotifier<T> useValueNotifier<T>(T value) {
   final n = ValueNotifier<T>(value);
   onBeforeUnmount(n.dispose);
   return n;
 }
 
+/// Creates a [ChangeNotifier].
+///
+/// The notifier is automatically disposed when the widget is unmounted.
 T useNotifier<T extends ChangeNotifier>(T notifier) {
   onBeforeUnmount(notifier.dispose);
   return notifier;
 }
 
-/// --- TransformationController ---
+/// Creates a [TransformationController].
+///
+/// The controller is automatically disposed when the widget is unmounted.
 TransformationController useTransformationController([Matrix4? value]) {
   final c = TransformationController(value);
   onBeforeUnmount(c.dispose);
   return c;
 }
 
-/// --- StreamController ---
+/// Creates a [StreamController].
+///
+/// The controller is automatically closed when the widget is unmounted.
 StreamController<T> useStreamController<T>({
   bool sync = false,
 }) {
@@ -156,7 +182,9 @@ StreamController<T> useStreamController<T>({
   return c;
 }
 
-/// --- StreamSubscription ---
+/// Creates a [StreamSubscription].
+///
+/// The subscription is automatically cancelled when the widget is unmounted.
 StreamSubscription<T> useStreamSubscription<T>(
   Stream<T> stream,
   void Function(T event)? onData, {
@@ -174,7 +202,9 @@ StreamSubscription<T> useStreamSubscription<T>(
   return sub;
 }
 
-/// --- Timer ---
+/// Creates a [Timer].
+///
+/// The timer is automatically cancelled when the widget is unmounted.
 Timer useTimer(Duration duration, void Function() callback,
     {bool periodic = false}) {
   final timer = periodic
@@ -184,6 +214,9 @@ Timer useTimer(Duration duration, void Function() callback,
   return timer;
 }
 
+/// Creates an [OverlayEntry].
+///
+/// The entry is automatically removed when the widget is unmounted.
 OverlayEntry useOverlayEntry(WidgetBuilder builder) {
   final entry = OverlayEntry(builder: builder);
   onBeforeUnmount(entry.remove);
