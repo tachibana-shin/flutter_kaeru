@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kaeru/kaeru.dart';
 
+export 'composables/use_request/use_request.dart';
 export 'composables/flutter.dart';
 export 'composables/use_context.dart';
 export 'composables/use_keep_alive_client.dart';

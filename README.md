@@ -15,17 +15,6 @@
 > [!TIP]
 > If in KaeruMixin you have use `watch$` with `watch` and `watchEffect$` with `watchEffect`
 
-## List composables
-
-- `useContext`
-- `useHoverWidget`
-- `useRef`
-- `useState`
-- `useWidgetBounding`
-- `useWidgetSize`
-
----
-
 ## 📦 Installation
 
 Add this package to your `pubspec.yaml`:
@@ -139,6 +128,137 @@ Computed<double> useScaleWidth(Ref<double> ref) {
 | `useKeepAliveClient`       | Creates a `KeepAliveClient` with automatic dispose                | Simply calling this hook will make your widget behave as if it were a widget with KeepAliveClientMixin. |
 | `useRestoration`           | Creates a `RestorationController` with automatic dispose          | For restoration management                                                                              |
 | `useSingleTickerState`     | Creates a `SingleTickerProviderStateMixin` with automatic dispose | For custom animation without `AnimationController`                                                      |
+
+---
+
+## 3. Asynchronous Data Fetching Hooks
+
+| Hook / Composable          | Description                                                       |
+| -------------------------- | ----------------------------------------------------------------- |
+| `useRequest`               | Manages asynchronous data fetching with support for loading, error, and data states. |
+| `usePagination`            | Simplifies paginated data fetching.                               |
+| `useLoadMore`              | Handles "load more" or infinite scrolling logic.                  |
+| `usePolling`               | Repeatedly calls a service at a specified interval.               |
+
+### Usage Examples
+
+#### `useRequest`
+
+For basic data fetching.
+
+```dart
+class UserWidget extends KaeruWidget {
+  @override
+  Setup setup() {
+    final controller = useRequest(() => fetchUser('123'));
+
+    return () {
+      if (controller.loading.value) {
+        return CircularProgressIndicator();
+      }
+      if (controller.error.value != null) {
+        return Text('Error: ${controller.error.value}');
+      }
+      return Text('User: ${controller.data.value?.name}');
+    };
+  }
+}
+```
+
+#### `usePagination`
+
+For paginated data.
+
+```dart
+class UserList extends KaeruWidget {
+  @override
+  Setup setup() {
+    final controller = usePagination((page, pageSize) => fetchUsers(page, pageSize));
+
+    return () {
+      return Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: controller.data.value.length,
+              itemBuilder: (context, index) {
+                final user = controller.data.value[index];
+                return ListTile(title: Text(user.name));
+              },
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: Icon(Icons.arrow_back),
+                onPressed: controller.page.value > 1 ? () => controller.changePage(controller.page.value - 1) : null,
+              ),
+              Text('Page ${controller.page.value}'),
+              IconButton(
+                icon: Icon(Icons.arrow_forward),
+                onPressed: () => controller.changePage(controller.page.value + 1),
+              ),
+            ],
+          ),
+        ],
+      );
+    };
+  }
+}
+```
+
+#### `useLoadMore`
+
+For infinite scrolling.
+
+```dart
+class PostList extends KaeruWidget {
+  @override
+  Setup setup() {
+    final controller = useLoadMore((page, lastItem) => fetchPosts(page));
+
+    return () {
+      return ListView.builder(
+        itemCount: controller.data.value.length + 1,
+        itemBuilder: (context, index) {
+          if (index == controller.data.value.length) {
+            return TextButton(
+              onPressed: controller.loadMore,
+              child: Text('Load More'),
+            );
+          }
+          final post = controller.data.value[index];
+          return ListTile(title: Text(post.title));
+        },
+      );
+    };
+  }
+}
+```
+
+#### `usePolling`
+
+For periodically fetching data.
+
+```dart
+class Notifications extends KaeruWidget {
+  @override
+  Setup setup() {
+    final controller = usePolling(() => fetchNotifications(), interval: Duration(seconds: 10));
+
+    return () {
+      if (controller.loading.value && controller.data.value == null) {
+        return CircularProgressIndicator();
+      }
+      return Badge(
+        label: Text('${controller.data.value?.length ?? 0}'),
+        child: Icon(Icons.notifications),
+      );
+    };
+  }
+}
+```
 
 ---
 
