@@ -270,6 +270,49 @@ class Notifications extends KaeruWidget {
 | `useDark`         | Returns a reactive boolean `Ref` that is `true` if the current theme is dark.      |
 | `useWidgetSize`   | Reactively provides the `Size` of a widget using a `LayoutBuilder`.                |
 | `useWidgetBox`    | Reactively provides the `BoxConstraints` of a widget using a `LayoutBuilder`.      |
+| `useStream`       | Subscribes to a stream and returns a reactive `Ref` with its latest value.         |
+| `useStreamDefault`| Similar to `useStream`, but with a default value.                                  |
+
+---
+
+## 5. Stream Hooks
+
+| Hook / Composable | Description                                                                        |
+| ----------------- | ---------------------------------------------------------------------------------- |
+| `useStream`       | Subscribes to a stream and returns a reactive `Ref` with its latest value.         |
+| `useStreamDefault`| Similar to `useStream`, but with a default value.                                  |
+
+### `useStream`
+
+Subscribes to a stream and provides its data as a reactive `Ref`.
+
+```dart
+class StreamExample extends KaeruWidget {
+  @override
+  Setup setup() {
+    final stream = Stream.periodic(Duration(seconds: 1), (i) => i);
+    final value = useStream(stream);
+
+    return () => Text('Value: ${value.value ?? 'Loading...'}');
+  }
+}
+```
+
+### `useStreamDefault`
+
+Similar to `useStream`, but it uses a default value until the stream provides its first item.
+
+```dart
+class StreamDefaultExample extends KaeruWidget {
+  @override
+  Setup setup() {
+    final stream = Stream.periodic(Duration(seconds: 1), (i) => i);
+    final value = useStreamDefault(stream, defaultValue: 0);
+
+    return () => Text('Value: ${value.value}');
+  }
+}
+```
 
 ---
 
