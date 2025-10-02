@@ -262,7 +262,18 @@ class Notifications extends KaeruWidget {
 
 ---
 
-## 4. Notes
+## 4. UI & Layout Hooks
+
+| Hook / Composable | Description                                                                        |
+| ----------------- | ---------------------------------------------------------------------------------- |
+| `useTheme`        | Returns the current `ThemeData` from the widget tree.                              |
+| `useDark`         | Returns a reactive boolean `Ref` that is `true` if the current theme is dark.      |
+| `useWidgetSize`   | Reactively provides the `Size` of a widget using a `LayoutBuilder`.                |
+| `useWidgetBox`    | Reactively provides the `BoxConstraints` of a widget using a `LayoutBuilder`.      |
+
+---
+
+## 5. Notes
 
 - **Lifecycle hooks**:
   - `onBeforeUnmount`, `onUpdated`, etc., are core reactive hooks for cleanup & reactive side effects.
