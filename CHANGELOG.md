@@ -1,3 +1,10 @@
+## 0.2.5
+* Add async request, pagination, load more, polling.
+* Add `useDark` to reactively check for dark mode.
+* Add `useTheme` to access the current theme.
+* Add `useWidgetSize` to get the reactive size of a widget.
+* Add `useWidgetBox` to get the reactive constraints of a widget.
+
 ## 0.2.4
 * Update document
 
