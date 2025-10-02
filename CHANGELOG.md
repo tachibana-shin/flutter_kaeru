@@ -1,3 +1,6 @@
+## 0.2.6
+* add `useStream`
+
 ## 0.2.5
 * Add async request, pagination, load more, polling.
 * Add `useDark` to reactively check for dark mode.
