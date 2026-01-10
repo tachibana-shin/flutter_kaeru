@@ -62,15 +62,9 @@ class KaeruWidget<W extends StatefulWidget> extends StatefulWidget {
 
   /// Creates a [Computed] that depends on the widget's properties.
   Computed<T> prop<T>(T Function(W w) compute) {
-    assert(
-        _kaeruContext != null, 'Reactivity must be used within a KaeruMixin');
-    assert(_kaeruContext!.widget is W, 'The type $W must be of type widget');
+    final widget = useWidget<W>();
 
-    final ctx = _kaeruContext;
-    final computer = computed(() => compute(ctx!.widget as W));
-    onUpdated((_) => computer.onChange());
-
-    return computer;
+    return computed(() => compute(widget.value));
   }
 
   const KaeruWidget({super.key});

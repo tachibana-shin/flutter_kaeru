@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'use_context.dart';
+import 'package:kaeru/foundation/computed.dart';
+import 'package:kaeru/widget/kaeru_widget/kaeru_widget.dart';
 
 /// A composable that returns the current `ThemeData` from the widget tree.
 ///
@@ -14,12 +14,17 @@ import 'use_context.dart';
 ///
 ///   return KaeruBuilder(() {
 ///     return Text(
-///       'The primary color is ${theme.primaryColor}',
-///       style: TextStyle(color: theme.colorScheme.secondary),
+///       'The primary color is ${theme.$.primaryColor}',
+///       style: TextStyle(color: theme.$.colorScheme.secondary),
 ///     );
 ///   });
 /// });
 /// ```
-ThemeData useTheme() {
-  return Theme.of(useContext());
+Computed<ThemeData> useTheme() {
+  final context = useContext();
+  final compute = computed(() => Theme.of(context));
+
+  onDependenciesChanged(() => compute.onChange());
+
+  return compute;
 }

@@ -253,7 +253,7 @@ RestorationMixin useRestoration({
 TickerProvider useSingleTickerState();
 
 /// Retrieves the current widget instance of a specific type from the context.
-T useWidget<T extends Widget>();
+Ref<T> useWidget<T extends Widget>();
 ```
 
 ---

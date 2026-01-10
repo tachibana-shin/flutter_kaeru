@@ -72,7 +72,7 @@ Ref<bool> useDark() {
   final theme = useTheme();
   final dark = UseDark();
 
-  dark.mode ??= ref(theme.brightness == Brightness.dark);
+  dark.mode ??= ref(theme.value.brightness == Brightness.dark);
 
   return dark.mode!;
 }

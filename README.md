@@ -96,7 +96,7 @@ Computed<double> useScaleWidth(Ref<double> ref) {
 
 - All hooks life and reactivity ready
 - `useContext() -> BuildContext`
-- `useWidget<T> -> T is Widget`
+- `useWidget<T> -> Ref<T is Widget>`
 
 # Kaeru Hooks & Widgets (Full List)
 
@@ -266,7 +266,8 @@ class Notifications extends KaeruWidget {
 
 | Hook / Composable | Description                                                                        |
 | ----------------- | ---------------------------------------------------------------------------------- |
-| `useTheme`        | Returns the current `ThemeData` from the widget tree.                              |
+| `useTheme`        | Returns the current `Ref<ThemeData>` from the widget tree.                              |
+| `useInherited<T>` | Returns the `Ref<T>` from inherited the widget tree. This reactivity. |
 | `useDark`         | Returns a reactive boolean `Ref` that is `true` if the current theme is dark.      |
 | `useWidgetSize`   | Reactively provides the `Size` of a widget using a `LayoutBuilder`.                |
 | `useWidgetBox`    | Reactively provides the `BoxConstraints` of a widget using a `LayoutBuilder`.      |
