@@ -89,7 +89,7 @@ mixin KaeruMixin<T extends StatefulWidget> on State<T> {
           U? Function()? beforeUpdate,
           bool notifyBeforeUpdate = true,
           void Function(dynamic error)? onError,
-          immediate = false}) =>
+          bool immediate = false}) =>
       _autoDispose(AsyncComputed<U>(getValue,
           defaultValue: defaultValue,
           beforeUpdate: beforeUpdate,

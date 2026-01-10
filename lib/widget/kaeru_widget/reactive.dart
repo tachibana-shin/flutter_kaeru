@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:kaeru/kaeru.dart';
 
-
 KaeruMixin get _kaeruContext {
   final ctx = useKaeruContext();
   assert(ctx != null, 'Reactivity must be used within a KaeruMixin');
@@ -17,8 +16,20 @@ Computed<T> computed<T>(T Function() compute) =>
     _kaeruContext.computed(compute);
 
 /// Creates an instance of [AsyncComputed] with the given async function.
-AsyncComputed<T> asyncComputed<T>(Future<T> Function() compute) =>
-    _kaeruContext.asyncComputed(compute);
+AsyncComputed<T> asyncComputed<T>(
+  Future<T> Function() compute, {
+  T? defaultValue,
+  T? Function()? beforeUpdate,
+  bool notifyBeforeUpdate = true,
+  void Function(dynamic)? onError,
+  bool immediate = false,
+}) =>
+    _kaeruContext.asyncComputed(compute,
+        defaultValue: defaultValue,
+        beforeUpdate: beforeUpdate,
+        notifyBeforeUpdate: notifyBeforeUpdate,
+        onError: onError,
+        immediate: immediate);
 
 /// Sets up a reactive effect triggered by [callback].
 VoidCallback watchEffect(VoidCallback effect) =>
