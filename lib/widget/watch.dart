@@ -67,3 +67,7 @@ class _WatchState extends State<Watch> {
     super.dispose();
   }
 }
+
+extension WatchFnWidget<T extends Widget> on T Function() {
+  Watch watch() => Watch(this);
+}
