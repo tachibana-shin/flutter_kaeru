@@ -56,6 +56,9 @@ class Ref<T> extends ReactiveNotifier<T> implements ValueListenable<T> {
     return _value;
   }
 
+  /// Alias `.value`
+  T? get $ => value;
+
   T _value;
 
   /// Updates the current value and triggers a notification.

@@ -14,6 +14,8 @@ class Picker<T> {
     return (compute = _getCompute()).value;
   }
 
+  T? get $ => value;
+
   void dispose() {
     compute?.dispose();
     compute = null;
@@ -26,8 +28,7 @@ Picker<T> usePick<T>(T Function() selector) {
   final currentWatcher = getCurrentInstance();
 
   var pickWatcher = currentWatcher.getCC();
-  pickWatcher ??= currentWatcher
-      .setCC(Picker<T>(() => Computed<T>(selector)));
+  pickWatcher ??= currentWatcher.setCC(Picker<T>(() => Computed<T>(selector)));
 
   return pickWatcher as Picker<T>;
 }

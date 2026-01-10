@@ -90,6 +90,9 @@ class Computed<T> extends ReactiveNotifier<T> with WatcherRaw<T>, Watcher<T> {
     return _value;
   }
 
+  /// Alias `.value`
+  T? get $ => value;
+
   /// Adds a listener and ensures computation is performed before notifying.
   ///
   /// This guarantees that the initial computed value is available before the listener is triggered.
