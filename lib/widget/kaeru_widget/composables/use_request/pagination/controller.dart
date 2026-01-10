@@ -1,6 +1,5 @@
 import '../../../../../foundation/ref.dart';
 import '../../../reactive.dart';
-import 'options.dart';
 import 'pagination.dart';
 
 /// Manages the state and lifecycle of a paginated request.

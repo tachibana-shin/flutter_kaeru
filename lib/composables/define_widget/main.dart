@@ -1,7 +1,7 @@
 /// This library is deprecated and will be removed in a future version.
 /// Please use `KaeruWidget` instead.
 @Deprecated('Use KaeruWidget instead. This will be removed in a future version.')
-library define_widget;
+library;
 
 export 'composables/use_context.dart';
 export 'composables/use_hover_widget.dart';

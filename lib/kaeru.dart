@@ -1,5 +1,5 @@
 /// A reactive state management library for Flutter, inspired by Vue Composition API.
-library kaeru;
+library;
 
 // These APIs have been deprecated. Please use KaeruWidget as a replacement.
 // export 'composables/define_widget/main.dart';

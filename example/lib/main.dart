@@ -165,6 +165,8 @@ class _ShowFooState extends State<ShowFoo> with KaeruListenMixin, KaeruMixin {
 ///////////////////////////// test usePick
 
 class TestUsePick extends StatefulWidget {
+  const TestUsePick({super.key});
+
   @override
   createState() => _TestUsePickState();
 }
@@ -317,7 +319,7 @@ class _ParentWidgetState extends State<ParentWidget> {
               depend++;
             });
           },
-          child: Text('depend++ ${depend}'))
+          child: Text('depend++ $depend'))
     ]);
   }
 }

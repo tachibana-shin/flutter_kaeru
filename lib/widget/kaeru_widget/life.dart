@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kaeru/kaeru.dart';
 
-import 'kaeru_widget.dart';
 
 KaeruLifeMixin get _lifeContext {
   final ctx = useLifeContext();

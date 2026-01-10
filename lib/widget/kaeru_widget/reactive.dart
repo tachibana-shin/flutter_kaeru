@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:kaeru/kaeru.dart';
 
-import 'kaeru_widget.dart';
 
 KaeruMixin get _kaeruContext {
   final ctx = useKaeruContext();
