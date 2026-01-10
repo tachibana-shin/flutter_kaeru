@@ -20,6 +20,8 @@ export 'composables/use_widget_size.dart';
 export 'life.dart';
 export 'reactive.dart';
 
+export 'kaeru_async_widget.dart';
+
 /// A function that returns a widget.
 typedef Setup = Widget Function();
 
@@ -56,12 +58,10 @@ KaeruLifeMixin? useLifeContext() {
 }
 
 /// A widget that provides a reactive context for its children.
-class KaeruWidget<W extends StatefulWidget> extends StatefulWidget {
+abstract class KaeruWidget<W extends StatefulWidget> extends StatefulWidget {
   /// A function that returns a widget.
   @protected
-  Setup setup() {
-    throw UnimplementedError('setup must be implemented');
-  }
+  Setup setup();
 
   /// Creates a [Computed] that depends on the widget's properties.
   Computed<T> prop<T>(T Function(W w) compute) {

@@ -82,6 +82,30 @@ class CounterWidget extends KaeruWidget<CounterWidget> {
 }
 ```
 
+and version async
+```dart
+class GetTime extends KaeruWidget {
+  @override
+  SetupAsync setupAsync() {
+    final msg = await fetch("http://worldtimeapi.org/api/timezone/Asia/Tokyo");
+
+    return () => Text("json: $msg");
+  }
+
+  @protected
+  Widget none() => const SizedBox.shrink();
+
+  @protected
+  Widget loading() => defaultLoading(); // default is SizedBox.shrink()
+
+  @protected
+  Widget error(Object? error) => defaultError(error);
+
+  @protected
+  Widget empty() => defaultEmpty();
+}
+```
+
 You can even create compositions with this
 
 ```dart
