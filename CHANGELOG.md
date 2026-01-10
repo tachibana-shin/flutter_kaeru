@@ -1,3 +1,13 @@
+## 0.2.7
+* feat(widget): add async widget capabilities
+* feat(composables): add useListen and useModel
+* feat(widget): export useInherited composable
+* feat(widget): add extension for Watch widget creation
+* feat(core): Add `$` alias for value getter
+* refactor(asyncComputed): expose all parameters
+* feat: Introduce reactive `useInherited` hook
+* refactor: clean up code and update dependencies
+
 ## 0.2.6
 * add `useStream`
 
