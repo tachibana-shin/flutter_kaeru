@@ -268,6 +268,8 @@ class Notifications extends KaeruWidget {
 | ----------------- | ---------------------------------------------------------------------------------- |
 | `useTheme`        | Returns the current `Ref<ThemeData>` from the widget tree.                              |
 | `useInherited<T>` | Returns the `Ref<T>` from inherited the widget tree. This reactivity. |
+| `useListen` | Listen listenable and auto freezed. This composable return `VoidCallback` to cancel listen |
+| `useModel` | Return `Model(controller, ref)` |
 | `useDark`         | Returns a reactive boolean `Ref` that is `true` if the current theme is dark.      |
 | `useWidgetSize`   | Reactively provides the `Size` of a widget using a `LayoutBuilder`.                |
 | `useWidgetBox`    | Reactively provides the `BoxConstraints` of a widget using a `LayoutBuilder`.      |
