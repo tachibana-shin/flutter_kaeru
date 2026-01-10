@@ -5,6 +5,7 @@ export 'composables/use_request/use_request.dart';
 export 'composables/flutter.dart';
 export 'composables/use_context.dart';
 export 'composables/use_dark.dart';
+export 'composables/use_inherited.dart';
 export 'composables/use_keep_alive_client.dart';
 export 'composables/use_restoration.dart';
 export 'composables/use_single_ticker_state.dart';
