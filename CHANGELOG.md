@@ -1,3 +1,6 @@
+## 0.2.8
+* fix bug $?
+
 ## 0.2.7
 * feat(widget): add async widget capabilities
 * feat(composables): add useListen and useModel
