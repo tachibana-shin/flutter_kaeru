@@ -13,7 +13,7 @@ abstract class ReactiveNotifier<T> extends ChangeNotifier {
   T get value;
 
   /// Alias `.value`
-  T? get $ => value;
+  T get $ => value;
 
   /// Creates a [Computed] that selects a value from the notifier.
   Computed<U> select<U>(U Function(T value) getter) {

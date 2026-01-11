@@ -14,7 +14,7 @@ class Picker<T> {
     return (compute = _getCompute()).value;
   }
 
-  T? get $ => value;
+  T get $ => value;
 
   void dispose() {
     compute?.dispose();
