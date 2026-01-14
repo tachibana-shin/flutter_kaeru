@@ -11,6 +11,10 @@ export 'composables/watch_effect.dart';
 export 'composables/watch.dart';
 
 export 'extensions/value_notifier_to_ref.dart';
+export 'extensions/ref_list.dart';
+export 'extensions/ref_map.dart';
+export 'extensions/ref_queue.dart';
+export 'extensions/ref_set.dart';
 
 export 'foundation/async_computed.dart';
 export 'foundation/computed.dart';
