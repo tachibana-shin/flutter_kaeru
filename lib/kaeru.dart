@@ -24,3 +24,5 @@ export 'mixins/kaeru_mixin.dart';
 export 'widget/kaeru_widget/kaeru_widget.dart';
 export 'widget/watch.dart';
 export 'widget/kareu_builder.dart';
+
+export 'shared/reactive_notifier.dart';
