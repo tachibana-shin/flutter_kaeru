@@ -1,3 +1,10 @@
+## 0.3.0
+* feat(widget): add useMediaQuery composable
+* feat(reactive): allow contextless reactivity`
+* feat(ref-collections): add reactive collection extensions
+* refactor(foundation): unify notifications & remove $ alias
+* feat: Export reactive_notifier
+
 ## 0.2.8
 * fix bug $?
 
