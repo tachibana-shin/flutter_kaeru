@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:notifier_plus/notifier_plus.dart';
 import 'package:kaeru/event_bus.dart';
 
 import '../shared/reactive_notifier.dart';
@@ -38,14 +37,10 @@ import '../shared/reactive_notifier.dart';
 /// - **Efficient Updates**: Notifies listeners only if the value actually changes.
 /// - **Seamless Integration**: Works with `watchEffect()` and Flutter's `ValueListenable`.
 class Ref<T> extends ReactiveNotifier<T> implements ValueListenable<T> {
-  late final VoidCallback _onChange;
-
   /// Initializes a new [Ref] with the given initial [value].
   ///
   /// The [onChange] callback schedules a notification for changes in [value].
-  Ref(this._value) {
-    _onChange = oneCallTask(() => notifyListeners());
-  }
+  Ref(this._value);
 
   /// The current value of this [Ref].
   ///
@@ -55,9 +50,6 @@ class Ref<T> extends ReactiveNotifier<T> implements ValueListenable<T> {
     getCurrentWatcher()?.addDepend(this);
     return _value;
   }
-
-  /// Alias `.value`
-  T get $ => value;
 
   T _value;
 
@@ -69,7 +61,7 @@ class Ref<T> extends ReactiveNotifier<T> implements ValueListenable<T> {
       return;
     }
     _value = newValue;
-    _onChange();
+    notifyChange();
   }
 
   /// Returns a string representation containing the runtime type and the current [value].

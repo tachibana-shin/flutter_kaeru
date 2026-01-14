@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:notifier_plus/notifier_plus.dart';
 
 import '../foundation/computed.dart';
 
@@ -18,6 +19,12 @@ abstract class ReactiveNotifier<T> extends ChangeNotifier {
   /// Creates a [Computed] that selects a value from the notifier.
   Computed<U> select<U>(U Function(T value) getter) {
     return Computed(() => getter(value));
+  }
+
+  late final VoidCallback notifyChange;
+
+  ReactiveNotifier() {
+    notifyChange = oneCallTask(notifyListeners);
   }
 
   @override

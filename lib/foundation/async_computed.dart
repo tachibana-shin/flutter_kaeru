@@ -90,9 +90,6 @@ class AsyncComputed<T> extends ReactiveNotifier<T?> {
     return _value;
   }
 
-  /// Alias `.value`
-  T? get $ => value;
-
   /// Adds a listener to be notified when the computed value changes.
   ///
   /// The computation is triggered before adding the listener,
@@ -107,7 +104,7 @@ class AsyncComputed<T> extends ReactiveNotifier<T?> {
   void force(T? value) {
     if (_value != value) {
       _value = value;
-      notifyListeners();
+      notifyChange();
     }
   }
 
