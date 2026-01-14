@@ -13,8 +13,11 @@ import '../shared/watcher.dart';
 ///
 /// The `$` suffix is used to indicate that this is a low-level function that
 /// should be used with caution.
-VoidCallback watch$(Iterable<Listenable?> source, VoidCallback callback,
-    {bool immediate = false}) {
+VoidCallback watch$(
+  Iterable<Listenable?> source,
+  VoidCallback callback, {
+  bool immediate = false,
+}) {
   final watcher = WatcherRaw<void>();
 
   bool firstRun = true;
@@ -35,9 +38,9 @@ VoidCallback watch$(Iterable<Listenable?> source, VoidCallback callback,
   });
 
   // Merge the source into a single Listenable and add the callback as a listener.
-  final listenable = ((source.length == 1 ? source.first : null) ??
-      Listenable.merge(source))
-    ..addListener(callback2);
+  final listenable =
+      ((source.length == 1 ? source.first : null) ?? Listenable.merge(source))
+        ..addListener(callback2);
 
   // If the immediate flag is true, call the callback immediately.
   if (immediate) callback2();
