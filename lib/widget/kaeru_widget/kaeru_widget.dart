@@ -9,6 +9,7 @@ export 'composables/use_inherited.dart';
 export 'composables/use_keep_alive_client.dart';
 export 'composables/use_listen.dart';
 export 'composables/use_model.dart';
+export 'composables/use_media_query.dart';
 export 'composables/use_restoration.dart';
 export 'composables/use_single_ticker_state.dart';
 export 'composables/use_stream.dart';
