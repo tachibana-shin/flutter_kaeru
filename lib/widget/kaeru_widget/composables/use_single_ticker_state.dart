@@ -85,8 +85,10 @@ class _SingleTickerState implements TickerProvider {
   }
 
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    final String? tickerDescription =
-        switch ((_ticker?.isActive, _ticker?.muted)) {
+    final String? tickerDescription = switch ((
+      _ticker?.isActive,
+      _ticker?.muted,
+    )) {
       (true, true) => 'active but muted',
       (true, _) => 'active',
       (false, true) => 'inactive and muted',
