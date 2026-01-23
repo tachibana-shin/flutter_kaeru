@@ -216,4 +216,16 @@ extension RefListExt<T> on Ref<List<T>> {
     $.length = newLength;
     notifyChange();
   }
+
+  int get length {
+    return $.length;
+  }
+
+  bool get isEmpty {
+    return $.isEmpty;
+  }
+
+  bool get isNotEmpty {
+    return $.isNotEmpty;
+  }
 }
